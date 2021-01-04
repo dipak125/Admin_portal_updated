@@ -1,0 +1,12 @@
+/*Login Css*/
+.skin-black-light.loginBody .wrapper{ background: #eef5f9}
+.primaryLogo{ color:#de9160}
+.secondaryLogo{ color:#2380db}
+.login-box{ max-width:500px; width:auto!important;}
+.login-box .loginRemember label{ display: inline-block; vertical-align: middle;}
+.login-box .loginRemember label:last-child{margin-left: 25px; font-size: 12px;}
+.login-box .form-control-feedback{ width: auto; padding-right: 10px; color: #f1f1f1; pointer-events: inherit;}
+.login-box-body, .register-box-body{ -webkit-border-radius: 3px 3px 3px 3px; border-radius: 3px 3px 3px 3px; padding: 30px; box-sizing: border-box;}
+.login-box-body .form-control-feedback, .register-box-body .form-control-feedback{ color:#cacaca!important;; font-size: 12px;}
+.login-box-body, .register-box-body{padding: 30px;}
+.lginpg {margin-top: 100px !important;}

@@ -1,0 +1,7 @@
+.scrollable {
+    height: 20px;
+    overflow: scroll;
+    
+}
+.scrollable:hover{overflow-y:auto}
+

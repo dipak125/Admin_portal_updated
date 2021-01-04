@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1126" height="605.886" viewBox="0 0 1126 605.886">
+  <defs>
+    <filter id="Path_15634" x="0" y="0" width="1126" height="605.886" filterUnits="userSpaceOnUse">
+      <feOffset dy="4" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="10" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#d9e8f5"/>
+      <stop offset="1" stop-color="#e9f5ff"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_3653" data-name="Group 3653" transform="translate(-77 -103.001)">
+    <g transform="matrix(1, 0, 0, 1, 77, 103)" filter="url(#Path_15634)">
+      <path id="Path_15634-2" data-name="Path 15634" d="M26,0H1040c14.359,0,26,13.211,26,29.507V516.378c0,16.3-11.641,29.507-26,29.507H26c-14.359,0-26-13.211-26-29.507V29.507C0,13.211,11.641,0,26,0Z" transform="translate(30 26)" fill="#f6faff"/>
+    </g>
+    <path id="Intersection_2" data-name="Intersection 2" d="M-4103-879a258.845,258.845,0,0,1,122.255-220h133.72c3.88,0,7.025,13.211,7.025,29.508v449.461q-2,.03-4,.03C-3987.042-620-4103-735.958-4103-879Z" transform="translate(5013 1228)" fill="url(#linear-gradient)"/>
+  </g>
+</svg>

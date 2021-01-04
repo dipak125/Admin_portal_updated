@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="347" height="45" viewBox="0 0 347 45">
+  <defs>
+    <filter id="Path_15723" x="133.192" y="0" width="39" height="30.971" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_1280" data-name="Group 1280" transform="translate(-425 -289)">
+    <g id="Path_15722" data-name="Path 15722" transform="translate(425 291)" fill="#f5f5f5">
+      <path d="M 338.8286743164063 20.49072456359863 L 8.171318054199219 20.49072456359863 C 3.941318273544312 20.49072456359863 0.5 16.00681495666504 0.5 10.495361328125 C 0.5 4.983906745910645 3.941318273544312 0.4999977052211761 8.171318054199219 0.4999977052211761 L 338.8286743164063 0.4999977052211761 C 343.0586853027344 0.4999977052211761 346.5 4.983906745910645 346.5 10.495361328125 C 346.5 16.00681495666504 343.0586853027344 20.49072456359863 338.8286743164063 20.49072456359863 Z" stroke="none"/>
+      <path d="M 8.1712646484375 0.9999980926513672 C 4.217010498046875 0.9999980926513672 1 5.259588241577148 1 10.495361328125 C 1 15.73113441467285 4.217010498046875 19.99072456359863 8.1712646484375 19.99072456359863 L 338.8286743164063 19.99072456359863 C 342.782958984375 19.99072456359863 346 15.73113441467285 346 10.495361328125 C 346 5.259588241577148 342.782958984375 0.9999980926513672 338.8286743164063 0.9999980926513672 L 8.1712646484375 0.9999980926513672 M 8.1712646484375 -1.9073486328125e-06 L 338.8286743164063 -1.9073486328125e-06 C 343.3415832519531 -1.9073486328125e-06 347 4.698951721191406 347 10.495361328125 C 347 16.29177093505859 343.3415832519531 20.99072456359863 338.8286743164063 20.99072456359863 L 8.1712646484375 20.99072456359863 C 3.658416748046875 20.99072456359863 0 16.29177093505859 0 10.495361328125 C 0 4.698951721191406 3.658416748046875 -1.9073486328125e-06 8.1712646484375 -1.9073486328125e-06 Z" stroke="none" fill="#f1f1f1"/>
+    </g>
+    <circle id="Ellipse_103" data-name="Ellipse 103" cx="2.5" cy="2.5" r="2.5" transform="translate(440 299)" fill="#e6e6e6"/>
+    <ellipse id="Ellipse_104" data-name="Ellipse 104" cx="2" cy="2.5" rx="2" ry="2.5" transform="translate(485 299)" fill="#e6e6e6"/>
+    <circle id="Ellipse_105" data-name="Ellipse 105" cx="2.5" cy="2.5" r="2.5" transform="translate(528 299)" fill="#e6e6e6"/>
+    <circle id="Ellipse_106" data-name="Ellipse 106" cx="2.5" cy="2.5" r="2.5" transform="translate(573 299)" fill="#e6e6e6"/>
+    <ellipse id="Ellipse_107" data-name="Ellipse 107" cx="3" cy="2.5" rx="3" ry="2.5" transform="translate(618 299)" fill="#e6e6e6"/>
+    <circle id="Ellipse_108" data-name="Ellipse 108" cx="2.5" cy="2.5" r="2.5" transform="translate(664 299)" fill="#e6e6e6"/>
+    <circle id="Ellipse_109" data-name="Ellipse 109" cx="2.5" cy="2.5" r="2.5" transform="translate(708 299)" fill="#e6e6e6"/>
+    <circle id="Ellipse_110" data-name="Ellipse 110" cx="2.5" cy="2.5" r="2.5" transform="translate(753 299)" fill="#e6e6e6"/>
+    <g transform="matrix(1, 0, 0, 1, 425, 289)" filter="url(#Path_15723)">
+      <path id="Path_15723-2" data-name="Path 15723" d="M6.485,0h8.029a6.485,6.485,0,1,1,0,12.971H6.485A6.485,6.485,0,0,1,6.485,0Z" transform="translate(142.19 6)" fill="#00b5ef"/>
+    </g>
+    <text id="_5_00_000" data-name="₹ 5,00,000" transform="translate(548 331)" fill="#00b5ef" font-size="12" font-family="SegoeUI, Segoe UI"><tspan x="0" y="0">₹ 5,00,000</tspan></text>
+  </g>
+</svg>

@@ -1,0 +1,555 @@
+/*Style.css*/
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap');
+/*Veriables*/
+
+
+html, body{ height: 100%}
+body{ font-family: 'Open Sans', sans-serif; color:#353535; font-weight:400; font-size:14px; background-color: #eaeef1 !important; }
+a { color:#333;}
+a:hover { color:#333;}
+.btn:focus, .btn.focus{ box-shadow: none;}
+.form-control:focus{ box-shadow:none; border-color:#8F8F8F;}
+
+h4{font-size: 18px; line-height: 22px; font-weight: 600;}
+.fontSize17{ font-size: 17px!important;}
+
+/*Addjustment*/
+.m-t-10 {margin-top: 10px;}
+.m-t-15{ margin-top: 15px;} 
+.m-t--20 {margin-top: -20px;}
+.m-b-15{ margin-bottom: 15px!important;}
+.m-t-20{ margin-top: 20px;} 
+.m-b-20{ margin-bottom: 20px!important;}
+.m-t-25{ margin-top: 25px;} 
+.m-t-40 {margin-top: 40px !important;}
+.m-b-25{ margin-bottom: 25px !important;}
+.m-t-30{ margin-top:30px;} 
+.m-b-30{ margin-bottom:30px;}
+.m-b-40 {margin-bottom: 40px !important;}
+.m-b-45 {margin-bottom: 45px;}
+.m-b15 {margin-bottom: 15px !important;}
+.m-b-10 {margin-bottom: 10px !important;}
+.m-t-60 {margin-top: 60px !important;}
+.m-t-11 {margin-top: -11px !important;}
+
+.ml-5 {margin-left: 5px !important;}
+.m-r-10{ margin-right:10px;}
+.m-r-60 {margin-right: 60px;}
+.m-r-15 {margin-right: 15px;}
+.m-r-25 {margin-right: 25px;}
+.m-r-40{ margin-right:40px;}
+.m-l-5 {margin-left: 5px;}
+.m-l-20 {margin-left: 20px !important;}
+.m-l-0 {margin-left: 0px !important;}
+.m-l-15 {margin-left: 15px !important;}
+.p-d-25 {padding: 25px;}
+.pd-l-0 {padding-left: 0;}
+.pd-30 {padding: 30px;}
+.p-r-25 {padding-right: 25px;}
+
+.fs-16 {font-size: 16px !important;}
+.W-10 {width: 10%;}
+.W-70 {width: 70%;}
+.noPad{ padding: 0;}
+.noMar{ margin: 0;}
+hr{border-top:1px solid rgba(220,220,220,1); margin-top:0; margin-bottom:25px;}
+.mdLable{ font-size:16px;}
+
+
+.W225 {max-width: 225px;}
+.W275 {max-width: 275px;}
+.W270 {max-width: 270px;}
+.W500 {max-width: 500px;}
+
+/****************Header*************/
+
+.headerTop{ background-color:#ffffff; color:#353535; height: 70px;}
+.headerTop img {cursor: pointer;}
+.userTopRtSec .dropdown-toggle.btn{ padding: 0;}
+.userTopRtSec .dropdown-toggle::after{ display: none;}
+.userTopRtSec .dropdown-toggle.btn.btn-success{ background: none; border: none; box-shadow:none;}
+.userTopRtSec .topUserBtn{ text-align: left;}
+.userTopRtSec .topUserBtn div:last-child{ padding-left: 10px;}
+.topUserBtn p{ margin:0; font-size:13px; line-height:18px; color:#4F4F51}
+.topUserBtn p.userName{ color:#353535; font-weight: 600;}
+.userTopRtSec .btn-success:not(:disabled):not(.disabled).active:focus, .userTopRtSec .btn-success:not(:disabled):not(.disabled):active:focus, .userTopRtSec .show>.btn-success.dropdown-toggle:focus{ box-shadow:none;} /*Added Parent Class ".userTopRtSec"*/
+.userTopRtSec .btn-success.focus, .userTopRtSec .btn-success:focus{ box-shadow:none;}
+.userTopRtSec .notiBell{ background:url('../images/CSC.svg') no-repeat 50% 100%; width:85px; height:40px; position:relative; margin-right:27px; display:block;}
+
+/*-------------- Tab Section--------------*/
+.messageDeskSec .nav-pills .nav-link { font-size:16px; line-height: 18px; color:#8F8F8F; letter-spacing:.36px; padding: 25px 40px 20px; outline: none;}
+.messageDeskSec .nav-pills .nav-link.active, .messageDeskSec .nav-pills .show>.nav-link{ position: relative; background:none; color:#353535; font-weight:800; }
+.messageDeskSec .nav-pills .nav-link.active::after{content:""; position: absolute; bottom:0; left:0; right:0; margin:0 auto; width:50px; height:3px; background:#0286CE;}
+.messageDeskSec .nav-pills .messageDeskTab { border-bottom: 1px solid rgba(0,0,0,.16); margin-bottom: 25px;}
+
+.bg-light{ background-color:#eaeef1!important; color: #8F8F8F;}
+.navbar-nav{ text-transform: uppercase;}
+.navbar-toggler{ border-radius:0; padding: .25rem 0.45rem; font-size: 1.25rem; background:#fff; border-color: transparent!important;}
+.navbar-toggler:focus, .navbar-toggler:hover{ outline: none; border-color: transparent;}
+.navbar{ padding: .5rem 0.6rem;}
+
+
+/****************Side Nav*************/
+
+.content{ padding:30px;}
+.contentSec{ overflow: hidden; border-radius:15px; border: 0px solid #000000; box-shadow: 0 2px 10px rgba(0, 0, 0, .08); -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, .08); -moz-box-shadow: 0 2px 10px rgba(0, 0, 0, .08);}
+.leftNav{  background: url('../images/sidenav-bg.svg') no-repeat left 0; color:#fff; min-height: 730px; padding-top: 25px; position: relative;background-size: cover;}
+.flexiContent{ background:#f4f4f4;}
+.bgWhite{ background:#fff;}
+
+
+ul.navPan{ margin:0; padding:0; list-style: none;}
+ul.navPan li a{ color:#fff; font-size:13px; padding:10px 20px 20px 50px; box-sizing: border-box; display: block; text-align: left; }
+ul.navPan li a:hover{ text-decoration:none; background-color:#053f77 ; color: #fff;}
+ul.navPan li a.active { background-color: #fff; color: #0085CF; display: inline-block;}
+ul.navPan li a p{ margin-bottom:0;}
+ul.navPan li a span{ margin-bottom:8px; display: block; }
+
+.leftIcon01 {display: inline-block !important; margin-right: 10px;}
+.btn-lg {border-radius:0px 50px 50px 0px; -moz-border-radius:0px 50px 50px 0px; -webkit-border-radius:0px 50px 50px 0px; background-color: #17446c !important; width: 157px; height: 52px; position: absolute; bottom: 30px; border: none !important ; text-decoration: none; box-shadow: none !important; outline: none !important;}
+.btn-lg a {color: #ffffff !important; font-size: 14px;}
+.btn-lg a:hover {text-decoration: none !important;}
+/* ul.navPan li a span.leftIcon01{ background:url('../images/leftIcon01.svg') no-repeat 50% 100%; width: 40px; height: 40px;} */
+/* ul.navPan li a:hover span.leftIcon01, ul.navPan li a.active:hover span.leftIcon01, ul.navPan li a.active span.leftIcon01{ background:url('../images/leftIcon01Hover.png') no-repeat  50% 100%;} */
+
+/* ul.navPan li a span.leftIcon02{ background:url('../images/leftIcon02Hover.svg') no-repeat 50% 100%; width: 40px; height: 40px;} */
+/* ul.navPan li a:hover span.leftIcon02, ul.navPan li a.active:hover span.leftIcon02, ul.navPan li a.active span.leftIcon02{ background:url('../images/leftIcon02.png') no-repeat 50% 100%;} */
+
+/* ul.navPan li a span.leftIcon03{ background:url('../images/leftIcon03.svg') no-repeat 50% 100%; width: 40px; height: 40px;} */
+/* ul.navPan li a:hover span.leftIcon03, ul.navPan li a.active:hover span.leftIcon03, ul.navPan li a.active span.leftIcon03{ background:url('../images/leftIcon03Hover.png') no-repeat 50% 100%;} */
+
+/* ul.navPan li a span.leftIcon04{ background:url('../images/leftIcon04.svg') no-repeat 50% 100%; width: 40px; height: 40px;} */
+/* ul.navPan li a:hover span.leftIcon04, ul.navPan li a.active:hover span.leftIcon04, ul.navPan li a.active span.leftIcon04{ background:url('../images/leftIcon04Hover.png') no-repeat 50% 100%;} */
+
+/* ul.navPan li a span.leftIcon05{ background:url('../images/leftIcon05.svg') no-repeat 50% 100%; width: 40px; height: 40px;} */
+/* ul.navPan li a:hover span.leftIcon05, ul.navPan li a.active:hover span.leftIcon05, ul.navPan li a.active span.leftIcon05{ background:url('../images/leftIcon05Hover.png') no-repeat 50% 100%;} */
+
+.footer {width: 100%; margin: 0 auto; text-align: center; font-size: 12px; color: #ACACAC;}
+.footer:before {content: ""; border: 1px solid #D8D8D8; width: 100%; height: 2px; margin-bottom: 25px; display: block;}
+
+/*------Table------*/
+.tablecontent {background-color: #ffffff; border-radius: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, .08); overflow: hidden; margin-bottom: 200px;}
+.tablecontent td {color: #575757; font-size: 20px; padding: 20px 30px;}
+.buy {border: 1px solid #ff8000; border-radius: 16.5px; padding: 6px 20px; color:#ff8000; font-size: 14px; text-align: center; background-color: #ffffff !important; outline: none !important;}
+.renew {border: 1px solid #2B75B7; border-radius: 16.5px; padding: 6px 20px; color:#2B75B7; font-size: 14px; text-align: center; background-color: #ffffff !important; outline: none !important;}
+.tablecontent tr:hover .buy {border: 1px solid #ff8000 !important; background-color: #ff8000 !important; color: #ffffff !important;}
+.tablecontent tr:hover .renew {border: 1px solid #2B75B7 !important; background-color: #2B75B7 !important; color: #ffffff !important;}
+.buy.active:focus {color:#ff8000 !important;}
+.renew.active:focus {color:#2B75B7 !important;}
+ .tablecontent table {width: 100%;}
+ .tablecontent tr:hover {background-color: #efefef;}
+
+
+
+/*-------------- Select Brand Section--------------*/
+
+.brand { margin: 25px auto; padding: 25px; max-height: 70vh; max-width: 1066px; background: url(../images/brand-bg1.svg) no-repeat center center; box-shadow: 0 4px 20px rgba(0, 0, 0, .08); -webkit-box-shadow: 0 4px 20px rgba(0, 0, 0, .08); -moz-box-shadow: 0 4px 20px rgba(0, 0, 0, .08); box-sizing: border-box; border-radius: 25px; min-height: 710px;}
+.brandhead h4 {font-size: 15px; color: #1482AB;}
+.brandhead p {font-size: 18px; color: #231F20;}
+
+.regisBox {box-sizing: border-box; border-radius: 12px; background-color: #2770b3; padding: 30px 25px 100px;}
+.txtRegistr {color: #FFFFFF; font-size: 12px;}
+.rgistrBtn {border: 1px solid #AFDFF2; border-radius: 15px; background-color: #2770b3; color: #ffffff !important; padding: 3px 15px; font-size: 12px; text-transform: uppercase;}
+
+
+.brand-table {background-color: #ffffff; border-radius: 16.5px; overflow: hidden; max-width: 647px; border-right: 1px solid #D4D4D4; margin-top: 30px; margin-bottom: 50px;}
+.brand-table td {border: 1px solid #D4D4D4; padding: 15px 17px; cursor: pointer;}
+.brand-table td:hover {transform: scale(1); box-shadow: 0 3px 16px rgba(0, 0, 0, .26);}
+
+.backBtn {padding: 10px 45px; color: #AEAEAE; border: 1px solid #AEAEAE; border-radius: 23px; background-color: #ffffff; margin-right: 15px; outline: none !important;}
+.proceedBtn {padding: 12px 50px; color: #ffffff; border: 1px solid #FF8000; border-radius: 23px; background-color: #FF8000 !important; outline: none !important;}
+
+.formSection input[type="text"] { display: block; width: 100% !important; outline: none; border: none; border-bottom: 1px solid #1167b1; color: #1e7ea4;  background: #f6faff;}
+
+.formSection select { display: block;width: 100%;  outline: none;  border: none;  border-bottom: 1px solid #1167b1; 
+  -webkit-appearance: none; -moz-appearance: none;  appearance: none;  background: url(../images/arrow-down-sign-to-navigate.svg) no-repeat right center #f6faff;  color: #000;} 
+
+.btnPrimary {  background-color: #0095da; color: #fff; width: 140px; height: 47px;  padding: 0 10px;  text-align: center;  vertical-align: middle;  font-size: 16px;  border: 1px solid #0095da;  -webkit-box-shadow: -1px 6px 12px -7px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: -1px 6px 12px -7px rgba(0, 0, 0, 0.24);  box-shadow: -1px 6px 12px -7px rgba(0, 0, 0, 0.24);  border-radius: 47px;}
+
+/*---------Modal-------*/
+.modal-content {border-radius: 15px !important; position: absolute !important; top: 95px; border: 1px solid #1167B1 !important; max-width: 403px;}
+.customModal .modal-body{ text-align: center; padding: 20px 15px;}
+.customModal h3{ font-size:16px; font-weight:700; margin-top: 0; margin-bottom: 15px;}
+.customModal img { text-align: center; margin-bottom: 30px;}
+
+.main{ position:relative;}
+
+.main textarea, .main input { outline: none; border: 0; border-bottom: 1px solid #1167B1; font-size:14px; color:#AEAEAE; width:100%; background: url(../images/search.svg) no-repeat top 0% right 7px; }
+
+.modalboxInfo {text-transform: uppercase; font-weight: 700;}
+.grey {color: #8e8e8e; font-size: 12px;}
+.brdrbottom {border-bottom: 1px solid #bdbdbf; height: 30px;}
+
+
+
+
+
+.customCheckBoxtwo {
+   cursor: pointer;
+   -webkit-user-select: none;
+   -moz-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+ }
+ 
+ /* Hide the browser's default checkbox */
+ .customCheckBoxtwo input {
+   position: absolute;
+   opacity: 0;
+   cursor: pointer;
+   height: 0;
+   width: 0;
+ }
+ 
+ /* Create a custom checkbox */
+ .checkmark {
+   position: absolute;
+   top: 0;
+   right: 24px;
+   height: 16px;
+   width: 16px;
+   background-color: #eee;
+ }
+ 
+ /* On mouse-over, add a grey background color */
+ .customCheckBoxtwo:hover input ~ .checkmark {
+   background-color: #ccc;
+ }
+ 
+ /* When the checkbox is checked, add a blue background */
+ .customCheckBoxtwo input:checked ~ .checkmark {
+   background-color: #2196F3;
+ }
+ 
+ /* Create the checkmark/indicator (hidden when not checked) */
+ .checkmark:after {
+   content: "";
+   position: absolute;
+   display: none;
+ }
+ 
+ /* Show the checkmark when checked */
+ .customCheckBoxtwo input:checked ~ .checkmark:after {
+   display: block;
+ }
+ 
+ /* Style the checkmark/indicator */
+ .customCheckBoxtwo .checkmark:after {
+   left: 6px;
+   top: 2px;
+   width: 5px;
+   height: 12px;
+   border: solid white;
+   border-width: 0 3px 3px 0;
+   -webkit-transform: rotate(45deg);
+   -ms-transform: rotate(45deg);
+   transform: rotate(45deg);}
+
+/*----------------------The Custom customRadio 3------------------*/
+
+.customRadio3 { display:block; position: relative; padding:0 0 0 25px; color:#AEAEAE; cursor: pointer; line-height: 17px!important; font-weight: normal; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;  user-select: none; font-size: 14px;}
+/* Hide the browser's default radio button */
+.customRadio3 input { position: absolute; opacity: 0; cursor: pointer;}
+/* Create a custom radio button */
+.customRadio3 .checkmark { position: absolute; top:0px; left:0px; height:16px; width:16px; background-color: #fff; border:2px solid #B8B6B6; border-radius: 50%;}
+/* On mouse-over, add a grey background color */
+.customRadio3:hover input ~ .checkmark { background-color: #fff;}
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.customRadio3 .checkmark:after { content: ""; position: absolute; display: none;}
+/* Show the indicator (dot/circle) when checked */
+.customRadio3 input:checked ~ .checkmark:after { display: block;}
+/* Style the indicator (dot/circle) */
+.customRadio3 .checkmark:after { top:2px; left:2px; width:12px; height:12px; border-radius: 50%; background: #00B5EF; border: 2px solid #00B5EF !important;}
+
+.customRadio3 input:checked~.checkmark { background-color: #fff; border-color: #2196F3;}
+
+
+/*---------Premium section start-------*/
+.premimhead h4 {font-size: 18px; color: #707070; font-weight: 600 !important;}
+
+/*---------Premium section close-------*/
+
+
+
+/*---------Additional Deatils section start-------*/
+.hdtop {background: url(../images/hd-additional-bg.svg) no-repeat center center; max-width: 1060px; padding: 10px 0 20px; z-index: 2; border-radius: 25px 25px 0 0; margin: 0 auto; color: #ffffff; font-size: 15px;}
+
+.motrcar {text-align: center; margin-top: 50px;}
+.carloan h4 { font-size: 18px; color: #262626; margin-bottom: 15px;}
+.insurerName textarea, .insurerName input { outline: none; border: 0; border-bottom: 1px solid #1167B1; font-size:14px; color:#AEAEAE; width:100%; background-color: #f6faff;}
+
+.insurerName .btn.btn-primary { width: 100%; text-align: left; color: #AEAEAE; border: none; border-bottom: 1px solid #1167B1; background: #f6faff !important; outline: none; box-shadow: none; border-radius: 0; font-size: 14px; line-height: 11px !important; padding-left: 0;
+}
+.insurerName .btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {box-shadow: none !important;}
+
+.insurerName .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {color: #AEAEAE !important;}
+
+.insurerName .dropdown-toggle::after {right: 0; top: 50%; transform: translateY(-50%);}
+
+.dropdown-toggle::after {/* top: 10px; right: 10px; */position: absolute; border: none; content: ""; background: url(../images/downArrow.svg) no-repeat 50% 50%; width: 15px; height: 15px;}
+
+
+  .datePckr {width: 100%; border: none; border-bottom: 1px solid #ccc; border-bottom: 1px solid #1167B1; background-color: #f6faff !important; outline: none !important; background-image: url(../images/calendar.svg); background-repeat: no-repeat; background-position: right 5px bottom 3px;}
+
+  .react-datepicker-wrapper {width: 100%;}
+/*---------Additional Deatils section close-------*/
+
+
+/*---------Thank You Start-------*/
+.thankuBox {background-color: #ffffff; box-sizing: border-box; max-width: 632px; border-radius: 15px;  box-shadow: 0 4px 10px rgba(0, 0, 0, .08); margin: 145px auto 25px;}
+.thankuinfo {padding: 45px 30px;}
+.custtxt p {font-size: 18px; color: #231F20; font-weight: 300; line-height: 23px;}
+.lghtBlue {font-size: 18px; color: #1673C2; margin-left: 35px;}
+.proposal {background-color: #2B75B7; color: #ffffff; font-size: 16px; padding: 10px 60px 10px 15px; border-radius: 25px; background-image: url(../images/download.svg); background-repeat: no-repeat; background-position: right 22px top 14px; outline: none !important; border: none !important; box-shadow: none !important;}
+.policy {background-color: #24AAEB; color: #ffffff; font-size: 16px; padding: 10px 40px 10px 15px; border-radius: 25px; background-image: url(../images/download.svg); background-repeat: no-repeat; background-position: right 15px top 14px; outline: none !important; border: none !important; box-shadow: none !important;}
+.dashbrd {margin: 0 auto; text-align: center; font-size: 14px; color: #575757;}
+.dashbrd a:hover {text-decoration: none; color:#24AAEB ;}
+/*---------Thank You close-------*/
+
+
+/*------Hamburger Menu------*/
+/* Position and sizing of burger button */
+.bm-burger-button { position: absolute; width:36px; height:30px; right:17px; top:78px;}
+/* Color/shape of burger icon bars */
+.bm-burger-bars { background: #373a47;}
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover { background: #a90000;}
+/* Position and sizing of clickable cross button */
+.bm-cross-button {height: 24px; width: 24px;}
+/* Color/shape of close button cross */
+.bm-cross { background: #bdc3c7;}
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap { position: fixed; height: 100%;}
+/* General sidebar styles */
+.bm-menu { background: #373a47; padding: 2.5em 1.5em 0; font-size: 1.15em;}
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {fill: #373a47;}
+/* Wrapper for item list */
+.bm-item-list a{ color: #fff; padding: 0.4em;}
+/* Individual item */
+.bm-item { display: inline-block;}
+/* Styling of overlay */
+.bm-overlay { background: rgba(0, 0, 0, 0.3);}
+
+/*--------Custom Style-----------*/
+.bm-overlay{ top:0}
+.bm-burger-button{ background:url(../images/leftArrowIcon.png) 100% 50% no-repeat;}
+.bm-burger-button span{ display: none;}
+
+.smMenu{ top:0}
+.smMenu .bm-menu{ background: #0076c4;}
+.smMenu .bm-cross{ background: #fff;}
+.bm-item-list a:hover{ text-decoration:none; background-color: #1686d0;}
+.bm-item-list a:focus{ outline: none;}
+.bm-burger-button{ display: none;}
+/*------/Hamburger Menu------*/
+
+
+
+
+
+
+
+
+
+/*---------Insurance Start-------*/
+
+/*---------InformationYourself Start-------*/
+.hght45 {height: 45px !important;}
+.selfinfo {text-align: center; margin-bottom: 20px;}
+.selfinfo h4 {font-size: 20px; color: #231F20; text-align: center; font-weight: 700; line-height: 24px;}
+.custmpdbox {padding: 25px 22px;}
+.contactDetailsBox {width: 397px; height: auto; min-height: 300px; margin: 0 auto; background-color: #f6faff; position: relative; border-radius: 10px; -webkit-box-shadow: -1px -2px 12px 1px rgba(0, 0, 0, 0.24); -moz-box-shadow: -1px -2px 12px 1px rgba(0, 0, 0, 0.24); box-shadow: -1px -2px 12px 1px rgba(0, 0, 0, 0.24); text-align: left;}
+.boxpd {padding: 25px 15px 45px;}
+.formSection label {margin-bottom: 25px; font-size: 14px; width: 100%;}
+.formSection label select {display: block; width: 100%; outline: none; border: none; border-bottom: 1px solid #1167b1; -webkit-appearance: none; -moz-appearance: none; appearance: none; background: url(../images/downArrow.svg) no-repeat right center #f6faff; color: #000;}
+.small, small {font-size: 80%; font-weight: 400;}
+
+.formSection label input[type=text] { display: block; width: 100% !important; outline: none; border: none; border-bottom: 1px solid #1167b1; color: #1e7ea4; background-color: #f6faff;}
+
+.btnPrimary {background-color: #0095da; color: #fff; width: 140px; height: 47px; padding: 0 10px; text-align: center; vertical-align: middle; font-size: 16px; border: 1px solid #0095da; -webkit-box-shadow: -1px 6px 12px -7px rgba(0, 0, 0, 0.24); -moz-box-shadow: -1px 6px 12px -7px rgba(0, 0, 0, 0.24); box-shadow: -1px 6px 12px -7px rgba(0, 0, 0, 0.24); border-radius: 47px;}
+.cntrbtn {text-align: center; margin: 0 auto;}
+
+.modal-content .customModalfamlyForm {min-width: 638px !important; border-radius: 15px; color: #7d7d7d; font-size: 15px; padding: 20px 50px; background-color: #f6faff !important;}
+.customModalfamlyForm .modal-header { display: -ms-flexbox; display: flex; -ms-flex-align: start; align-items: flex-start; -ms-flex-pack: justify; justify-content: space-between; padding: 1rem 1rem; border-bottom: 1px solid #dee2e6; border-top-left-radius: .3rem; border-top-right-radius: .3rem;}
+/* .customModalfamlyForm .modal .close {padding: 1rem 1rem; margin: -1rem -1rem -1rem auto; font-weight: 300; position: absolute; right: 0; top: 0; margin: 10px; font-size: 34px; height: auto; padding: 0 10px; color: #999;} */
+.customModalfamlyForm h4 {font-size: 20px; color: #231f20; font-weight: 500;}
+
+.modal-content .customModalfamlyForm label { color: #000; text-align: left;}
+.customModalfamlyForm .formSection label {margin-bottom: 25px; font-size: 14px; width: 100%;}
+
+.customCheckBox {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;}
+
+  .customCheckBox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;}
+
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 20px !important;
+      width: 20px !important;
+      background-color: #fff;
+      border: 2px solid #aeaeae;}
+
+      .customCheckBox input:checked~.checkmark:after {
+        display: block;
+    }
+
+    .customCheckBox .checkmark:after {
+      left: 6px;
+      top: 3px;
+      width: 5px;
+      height: 10px;
+      border: solid #2196F3;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+  }
+
+  .checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;}
+
+    .customCheckBox input:checked~.checkmark {
+      background-color: #fff;
+      border-color: #2196F3;}
+
+      .errormessage p, .error .error-message {display: block; color: #ff402c; font-size: 10px; text-align: left; margin-top: 2px;}
+      /* label.error input[type="text"] { border-color: #ff402c !important;} */
+
+
+      .csrBox .Collapsible__trigger {display: block; padding: 20px;}
+      .csrBox .Collapsible__trigger { background-image: url(../images/plus-sign.svg); background-repeat: no-repeat; background-position: right 0px bottom 10px; cursor: pointer; margin-bottom: 15px; color: #353535; font-size: 16px; font-weight: 600;}
+      .csrBox .Collapsible__trigger.is-open {background-image: url(../images/minus-sign.svg);}
+
+
+/*---------InformationYourself close-------*/
+
+/*---------Medical Details start-------*/
+.medpd {padding: 35px 29px !important;}
+.medihead {font-size: 20px; color: #ffffff; line-height: 27px; text-align: center;}
+.medinfo p {font-size: 16px;}
+
+/*---------Medical Details close-------*/
+
+
+/*---------Address Start-------*/
+.proposr p {font-size: 20px;}
+.prsnlinfo {margin-bottom: 25px;}
+.W12 {width: 12% !important;}
+.infoIcon {margin-left: 5px;}
+/*---------Address close-------*/
+
+/*---------Select Duration Start-------*/
+.premium {padding: 15px; background-color: #b8daff; border: 1px solid #7abaff;}
+.premium p {margin-bottom: 0;}
+/*---------Select Duration close-------*/
+
+
+/*---- Policy Details start------*/
+.rghtsideTrigr {border-bottom: 1px solid #D2D2D2; margin-bottom: 15px;}
+.rghtsideTrigr .Collapsible__trigger {display: block;}
+.rghtsideTrigr .Collapsible__trigger { background-image: url(../images/plus-sign.svg); background-repeat: no-repeat; background-position: right; cursor: pointer; margin-bottom: 15px; color: #353535;  font-weight: 700; font-size: 16px; line-height: 21px;}
+.rghtsideTrigr .Collapsible__trigger.is-open {background-image: url(../images/minus-sign.svg); border-bottom: 1px solid #D2D2D2; height: 40px; font-weight: 700; font-size: 16px; line-height: 21px;}
+.listrghtsideTrigr {margin: 15px;}
+.paymntgatway {font-size: 17px; color: #000;}
+.paymntgatway img {cursor: pointer;}
+/* .bgwhite {background-color: #ffffff !important; background-image: none !important; height: 100% !important; min-height: 0 !important; padding-bottom: 50px;} */
+
+
+/*---- Policy Details close------*/
+/*---------Insurance close-------*/
+
+
+/*********** Extra large devices (large desktops, 1200px and up)***************/
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+    
+    
+}
+
+@media (min-width: 1200px) and (max-width: 1220px) {
+    
+}
+
+/******************** Large devices (desktops, less than 1200px)********************/
+@media (max-width: 1199.98px) {
+    /* .leftNav {display: none;} */
+
+ }
+ 
+
+/******************** Medium devices (tablets, less than 992px)********************/
+@media (max-width: 991.98px) { 
+   
+    
+}
+
+/******************** Small devices (landscape phones, less than 768px)********************/
+@media (max-width: 767.98px) {
+   
+
+}
+
+@media (max-width: 680px) {
+   
+    
+}
+
+/******************** Extra small devices (portrait phones, less than 576px)********************/
+
+@media (max-width: 575.98px) { 
+   .tablecontent {overflow: scroll;}
+      
+}
+
+/* Absolute Center Spinner for Loader */
+.loading {
+    position: fixed;
+    z-index: 999999;
+    height: 50px;
+    width: 50px;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+/* Transparent Overlay */
+    .loading:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+}
+.loading img {
+    left: 0;
+    position: absolute;
+    top: 0;
+}
+.errorMsg{ color: #ff0000; font-size: 12px; line-height: 14px; display: block; padding-top: 4px;}

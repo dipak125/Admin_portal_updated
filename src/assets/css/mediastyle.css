@@ -1,0 +1,116 @@
+/*Media Style.css*/
+@media (max-width: 1440px) {
+  .leftNav { min-height: 93%; z-index: 1; }
+}
+
+@media (max-width: 1278px) {
+}
+
+@media (max-width: 1199px) {
+  .leftNav{ width: 120px;}
+  ul.navPan li a { font-size: 12px;  padding: 12px; margin-bottom: 10px;}
+  ul.navPan li a{ text-align: center; }
+  .leftIcon01 { display: block !important;  margin-right: 0; margin-bottom: 0;}
+  .btn-lg{ width: 100%;}
+  .btn-lg a{ font-size: 12px;}
+  .brand-table {max-width: 569px;}
+  .brand-table td {padding: 12px;}
+  .brand-table td img {width: 80px;}
+  .brand-table {max-width: 527px;}
+  .inputfs12 {height: 53px;}
+  .inputadd {height: 53px;}
+}
+
+@media (max-width: 1024px) { 
+  body{ overflow-x: hidden;}  
+  h4 { font-size: 15px;  line-height: 18px;}
+  .customModalfamlyForm h4 { font-size: 15px;  line-height: 18px;}
+  
+  
+  
+  
+  
+}
+
+@media (max-width: 991px) {
+  .infobox{ padding-left: 150px;}
+  .lginpg{ margin-left: 15px; margin-right: 15px;}
+  .login-box-body, .register-box-body{ padding: 0!important;}
+  .brand { padding: 25px;}
+  .modal-content{ min-width: 300px;}
+  .modal-content .customModalfamlyForm {  min-width: 638px !important; padding: 20px; }
+  .customModal1 .modal-dialog{ margin: 0;}
+  .modal-content{ left: 50%; transform: translateX(-50%);}
+  .W-80 {width: 100% !important;}
+  .brand-table {overflow: scroll;}
+  .regisBox {text-align: center;}
+  .inputfs12 {height: initial; font-size: initial;}
+  .inputadd {height: initial;}
+  .modal-content .otpmodal {min-width: auto !important;}
+  .nomfs16 {font-size: 16px !important;}
+  .prsnlinfo .W12 {margin-right: 20px;}
+  .medihead { font-size: 16px;  line-height: normal;}
+  
+}
+
+@media (max-width: 767px) {
+  .brand{ min-height: inherit; background-image: inherit; background: #f6faff;}
+  .tablecontent td { font-size: 14px;  padding: 15px;}
+  .infobox .nav-pills .nav-link { padding: 15px 20px; }
+  .tablecontent { margin-bottom: 30px;}
+  .infobox .brand{ padding: 10px;}
+  .cntrbtn{ margin-top: 10px;}
+  .btnPrimary{ width: 100px;  height: 35px;}
+  .modal-content{ min-width: 90%; max-width: 90%;}
+  .modal-content .customModalfamlyForm {  min-width: 100% !important; max-width: 100%; }
+  .modal-body{ padding-left: 0; padding-right: 0;}
+  .modal-content .customModalfamlyForm label{ width: 100%;}
+  .formSection label, .formSection select, .formSection input[type="text"]{ font-size: 13px;}
+  .medinfo p { font-size: 13px;}
+  .proceedBtn, .backBtn{ padding: 8px 20px; font-size: 14px;}
+  .resmb{ margin-bottom: 20px;}
+  .medpd { padding: 15px !important;}
+  .regisBox{ padding: 15px; text-align: left;}
+  .medihead { font-size: 15px;  line-height: normal;}
+  .carloan h4 {font-size: 15px;}
+  .proposr-main{ display: block!important;}
+  .proposr p {font-size: 13px; }
+  .proposr-radio{ margin-bottom: 5px;}
+  .prsnlinfo .W12{ display: block; margin-right: 20px;}
+  .W-90 {width: 100% !important;}
+  .inputfs12 {font-size: 14px;}
+  .prsres p {font-size: 16px !important;}
+  
+  /*11-08-20*/
+  .tootalTicketinfo .col-md-3 { padding-right: 15px;}
+  .tootalTicketinfo .col-md-9 { padding-left: 15px;}
+  .tickeddetails .col-md-3{padding-right: 15px;}
+  .tickeddetails .col-md-9{padding-left: 15px;}
+}
+
+@media (max-width: 576px){
+  .headerTop .align-self-center:first-child img{ width: 100px;}
+  .headerTop .listSelect{ top: 25px!important; left: 0!important;}
+  .userTopRtSec .notiBell { width: 49px; height: 20px;  margin-right: 7px; background-size: contain;}
+  .leftNav { width: 80px;  }
+  ul.navPan li a{ line-height: 15px;}
+  .btn-lg{ border-radius: 0; line-height: 1; height: auto;}
+  .infobox { padding-left: 97px;}
+  .infobox .nav-pills .nav-link { padding: 15px 10px;  font-size: 11px;}
+  .rghtsideTrigr .Collapsible__trigger {height: 50px; margin-bottom: 0 !important;}
+  .policy {font-size: 14px;}
+  .proposal {font-size: 14px;}
+  .form-control.placeHCenter {width: 40px !important; height: 40px !important;}
+  .m-r-60 {margin-right: 15px;}
+  .prsnlinfo .W12 {margin-right: 40px;}
+}
+
+@media (max-width: 479px) {
+}
+
+@media (max-width: 380px) {
+}
+
+@media (max-width: 350px) {
+  
+}
