@@ -140,6 +140,7 @@ class LogIn extends Component {
             if(res.data.error == false) {
                 let bcLoginData = res.data.data ? res.data.data : []                      
                 this.fetchTokenDetails(bcLoginData.token)
+                actions.setSubmitting(false)
             }
             else {
                 sessionStorage.removeItem('bcLoginData');
@@ -262,10 +263,12 @@ class LogIn extends Component {
                             {({ values, errors, isValid, touched, isSubmitting,setFieldValue, setFieldTouched, }) => {
                                 return (
                                     <Form>
+                                        <h3 className="login-box-msg">Admin Login</h3>
+                                        <br />
                                         {this.state.errMsg ? (
                                             <Row className="show-grid">
                                                 <Col md={12}>
-                                                    <div className="errorMsg">{this.state.errMsg}</div>
+                                                    <div className="errorMsg loginError">{this.state.errMsg}</div>
                                                 </Col>
                                             </Row>
                                         ) : null}

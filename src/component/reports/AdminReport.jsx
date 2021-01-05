@@ -85,7 +85,9 @@ class AdminReport extends Component {
         showList: false,
         bcmaster_id: 0,
         role_id: 0,
-        partners: []
+        partners: [],
+        page_no: 1,
+        per_page: 10
     }
 
     changePlaceHoldClassAdd(e) {
@@ -150,11 +152,17 @@ class AdminReport extends Component {
     
     }
 
-    handleSubmit=(values)=>{
+    handleSubmit=(values, page_no)=>{
+
+        console.log("2", page_no);
+        if (isNaN(page_no)) {
+            page_no = 1;
+        }
         let fromDate = moment(values['from_date']);
         let toDate = moment(values['to_date']);
         let diffMon = toDate.diff(fromDate, 'days');
-        console.log(diffMon, fromDate, toDate);
+        // let page_no = this.state.page_no;
+        // console.log(diffMon, fromDate, toDate);
 
         if (fromDate > toDate) {
             swal(' From Date should be less than To Date ');
@@ -187,18 +195,26 @@ class AdminReport extends Component {
             // }
 
             formData.append('bcmaster_id', this.state.bcmaster_id); // sessionStorage.getItem('csc_id') ? "5" : bc_data ? bc_data.agent_id : "" ) 
-            formData.append('page_no', 1)   
-            formData.append('policy_status', 'complete')
+            formData.append('page', page_no);   
+            formData.append('policy_status', 'complete');
             formData.append('role_id', this.state.role_id);
             // formData.append('bc_agent_id', sessionStorage.getItem('csc_id') ? sessionStorage.getItem('csc_id') : bc_data ? bc_data.user_info.data.user.username : "") 
 
             this.props.loadingStart();
             axios.post('admin/report-list',formData)
             .then(res=>{
-                let statusCount = res.data.data ? res.data.data.report : [];   
-                let policyHolder = res.data.data ? res.data.data.report : []                      
+                let statusCount = res.data.data && res.data.data.report ? res.data.data.report[1] : [];   
+                let responseData = res.data.data && res.data.data.report ? res.data.data.report[0].data : []    
+                page_no = res.data.data && res.data.data.report ? res.data.data.report[0].current_page : 1 ;
+                let per_page = res.data.data && res.data.data.report ? res.data.data.report[0].per_page : 10;
+
+                let policyHolder = [];
+                for (const reportData in responseData) {
+                    policyHolder.push(responseData[reportData]);
+                }
+                console.log(policyHolder);
                 this.setState({
-                    statusCount, policyHolder
+                    statusCount, policyHolder, page_no, per_page
                 });
                 this.props.loadingStop();
             }).
@@ -267,8 +283,13 @@ class AdminReport extends Component {
           
     }
 
-    onPageChange(page, sizePerPage) {
-        this.fetchDashboard(this.state.searchValues,page);
+    onPageChange = async (page, sizePerPage) => {
+        // console.log("1", page);
+        // await this.setState({
+        //     page_no: page
+        // });
+
+        this.handleSubmit(this.state.searchValues, page);
     }
 
     renderShowsTotal(start, to, total) {
@@ -342,15 +363,17 @@ class AdminReport extends Component {
 
 
     render() {
-        const { statusCount, policyHolder, products, partners, role_id } = this.state
-        var totalRecord = statusCount ? statusCount.length : 1
-        var page_no = statusCount ? statusCount.page_no : 1 
+        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page } = this.state
+        var totalRecord = statusCount ? statusCount.total_count : 1
+        // var page_no = page_no ? page_no : 1 
+
+        // console.log("StatusCount", statusCount, statusCount.total_count)
 
         const options = {
             // afterColumnFilter: this.afterColumnFilter,
             // onExportToCSV: this.onExportToCSV,
             page: parseInt(page_no),  // which page you want to show as default
-            sizePerPage: 10,
+            sizePerPage: per_page,
             paginationShowsTotal: this.renderShowsTotal,  // Accept bool or function
             prePage: 'Prev', // Previous page button text
             nextPage: 'Next', // Next page button text
@@ -673,7 +696,7 @@ class AdminReport extends Component {
                                     <br />
                                     <BootstrapTable ref="table"
                                         data={policyHolder}
-                                        pagination={false}
+                                        pagination={true}
                                         options={options}
                                         remote={true}
                                         fetchInfo={{ dataTotalSize: totalRecord }}
