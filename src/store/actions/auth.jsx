@@ -113,6 +113,15 @@ export const authProcess = (data, onSuccess, onFailure) => {
                     sessionStorage.setItem('auth_token', response.data.token_type+" "+response.data.token);
                     sessionStorage.setItem('role_details', JSON.stringify(response.data.role_details));
                     sessionStorage.setItem('role_admin', response.data.is_admin);
+                    let userrole_data = response.data.admin_details.userrole;
+                    if (userrole_data.bcmaster_id !== 0 || response.data.admin_details.userrole.bcdetails) {
+                        sessionStorage.setItem('logo', response.data.admin_details.userrole.bcdetails.logo);
+                    } else {
+                        sessionStorage.setItem('logo', '');
+                    }
+                    sessionStorage.setItem('bcmaster_id', userrole_data.bcmaster_id);
+                    // sessionStorage.setItem('userrole_data', encryption.encrypt(JSON.stringify(response.data.userrole_data)));
+                    
                     // localStorage.setItem('users', JSON.stringify({ user: response.data.user, permission: response.data.permission, lastAction: Date.now() }));
                     localStorage.setItem('users', JSON.stringify({ user: encryption.encrypt(JSON.stringify(response.data.user_data)), permission: [], lastAction: Date.now() }));
                     localStorage.setItem('loginData', JSON.stringify( loginData ));

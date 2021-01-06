@@ -15,7 +15,8 @@ class HeaderTop extends Component {
     state = {
         logo: sessionStorage.getItem('logo') && sessionStorage.getItem('logo') != "undefined" ? sessionStorage.getItem('logo') : "",
         bc_data: {},
-        csc_data: {}
+        csc_data: {},
+        bcmaster_id: 0
     }
 
     handleLogout = () => {
@@ -40,29 +41,36 @@ class HeaderTop extends Component {
     }
 
     componentDidMount() {
-        let bc_data = sessionStorage.getItem('bcLoginData') ? sessionStorage.getItem('bcLoginData') : "";
+        // let bc_data = sessionStorage.getItem('bcLoginData') ? sessionStorage.getItem('bcLoginData') : "";
         let csc_data = localStorage.getItem('users') ? localStorage.getItem('users') : "";
+        let bc_data = localStorage.getItem('users') ? localStorage.getItem('users') : "";
+        // console.log(bc_data);
+        let bcmaster_id = sessionStorage.getItem('bcmaster_id');
 
         if(bc_data) {
             let encryption = new Encryption();
-            bc_data = JSON.parse(encryption.decrypt(bc_data));
-            this.setState({bc_data})
+            bc_data = JSON.parse(encryption.decrypt(JSON.parse(bc_data).user));
+            // console.log(bc_data);
+            this.setState({
+                bc_data,
+                bcmaster_id
+            })
         }
-        else if(csc_data && sessionStorage.getItem('csc_id')) {
-            let encryption = new Encryption();
-            // csc_data = JSON.parse(csc_data)          
-            // csc_data = csc_data.user
-            csc_data = JSON.parse(csc_data) 
-            csc_data = csc_data.user
-            csc_data = JSON.parse(encryption.decrypt(csc_data));  
-            this.setState({csc_data})
-        }
+        // else if(csc_data && sessionStorage.getItem('csc_id')) {
+        //     let encryption = new Encryption();
+        //     // csc_data = JSON.parse(csc_data)          
+        //     // csc_data = csc_data.user
+        //     csc_data = JSON.parse(csc_data) 
+        //     csc_data = csc_data.user
+        //     csc_data = JSON.parse(encryption.decrypt(csc_data));  
+        //     this.setState({csc_data})
+        // }
     }
 
       
     render() {
         // console.log("BC_data---", bc_data.user_info )
-        const { logo, bc_data, csc_data } = this.state
+        const { logo, bc_data, csc_data, bcmaster_id } = this.state
         
         return (
             <>
@@ -97,25 +105,15 @@ class HeaderTop extends Component {
                         <Dropdown alignRight>
                             <Dropdown.Toggle variant="" id="dropdown-basic">
                                 <div className="d-flex topUserBtn">
-                                {sessionStorage.getItem("auth_token") && bc_data.user_info ?
+                                {sessionStorage.getItem("auth_token") && bc_data && bcmaster_id != 0 && this.props.flag !== "logout" ?
                                     <div className="align-self-center userNameImg">
-                                        Welcome {bc_data.user_info.data.user.name}
-                                        {/* <p><a href={process.env.REACT_APP_PAYMENT_URL+'/core/public/pdf_files/RM-name-SBIG.xlsx'}>
-                                                <Blink color='blue' text='Download RM List' fontSize='14'>
-                                                    Download RM List
-                                                </Blink> 
-                                        </a></p> */}
+                                        Welcome {bc_data.name}                                        
                                     </div>
-                                        :  
-                                        sessionStorage.getItem("auth_token") && csc_data ?
-                                        <div className="align-self-center userNameImg">
-                                            Welcome {csc_data.name}
-                                            {/* <p><a href={process.env.REACT_APP_PAYMENT_URL+'/core/public/pdf_files/RM-name-SBIG.xlsx'}>
-                                                <Blink color='blue' text='Download RM List' fontSize='14'>
-                                                    Download RM List
-                                                </Blink> 
-                                            </a></p> */}
-                                        </div>
+                                    //     :  
+                                    // sessionStorage.getItem("auth_token") && csc_data ?
+                                    //     <div className="align-self-center userNameImg">
+                                    //         Welcome {csc_data.name}                                            
+                                    //     </div>
                                         : null }
                                     <div className="align-self-center">
                                      {this.props.flag == "logout" ? null :  
