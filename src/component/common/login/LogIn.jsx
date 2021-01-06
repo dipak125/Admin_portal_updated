@@ -202,19 +202,19 @@ class LogIn extends Component {
         const result = await this.handle_AutoSubmit(bcLoginData);
     }
 
-    handle_AutoSubmit = (bcLoginData) => {
-        //console.log('values', values); return false;
+    handle_AutoSubmit = (value, actions) => {
+        console.log('values', value); 
         return new Promise(resolve => {
             setTimeout(() => {
                 let values = {}
                 this.props.loadingStart();
                 values.rememberMe = this.state.rememberMe;
-                values.emailAddress= "csc@gmail.com";
-                values.password= "12345";
+                values.emailAddress= value.userId;
+                values.password= value.password;
                 values.bc_id= sessionStorage.getItem('csc_id')
                 values.user_type= sessionStorage.getItem('type')
-                values.agent_id=  bcLoginData.agent_id ? bcLoginData.agent_id : ""
-                values.bc_agent_id= bcLoginData.bc_agent_id ? bcLoginData.bc_agent_id : ""
+                // values.agent_id=  bcLoginData.agent_id ? bcLoginData.agent_id : ""
+                // values.bc_agent_id= bcLoginData.bc_agent_id ? bcLoginData.bc_agent_id : ""
                 
                 // this.setState({ errMsg: '' });
                 console.log("values-- ", values)
@@ -232,6 +232,7 @@ class LogIn extends Component {
                         }
                     }
                 );
+                actions.setSubmitting(false);
             }
             , 20)
         })
@@ -258,7 +259,7 @@ class LogIn extends Component {
                         <Formik
                             initialValues={newInitialValues}
                             validationSchema={loginvalidation}
-                            onSubmit={this.handleSubmit}
+                            onSubmit={this.handle_AutoSubmit}
                         >
                             {({ values, errors, isValid, touched, isSubmitting,setFieldValue, setFieldTouched, }) => {
                                 return (

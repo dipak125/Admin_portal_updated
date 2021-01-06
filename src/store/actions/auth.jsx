@@ -95,8 +95,9 @@ export const authProcess = (data, onSuccess, onFailure) => {
         let encryption = new Encryption();
         formData.append('enc_data',encryption.encrypt(JSON.stringify(post_data_obj)))
 
+        // .post('/login', formData)
         axios
-            .post('/login', formData)
+            .post('/admin-login', formData)
             .then(response => {
                 if (response.data.is_admin === true) {
                     dispatch(authSuccess(response.data));
@@ -129,8 +130,17 @@ export const authProcess = (data, onSuccess, onFailure) => {
                 }
             })
             .catch(error => {
-                dispatch(authFail(error));
-                onFailure && onFailure(error);
+                console.log(error.data)
+                if (error.status == 401) {
+                    dispatch(authFail({data:{message:'User must be Admin to get access to Reports section'}}));
+                    onFailure && onFailure({data:{message:'User must be Admin to get access to Reports section'}});
+                } else if (error.status == 422) {
+                    dispatch(authFail({data:{message:error.data.error}}));
+                    onFailure && onFailure({data:{message:error.data.error}});
+                } else {
+                    dispatch(authFail(error));
+                    onFailure && onFailure(error);
+                }
             })
     }
 }
