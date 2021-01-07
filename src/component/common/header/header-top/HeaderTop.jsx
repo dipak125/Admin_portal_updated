@@ -41,14 +41,16 @@ class HeaderTop extends Component {
     }
 
     componentDidMount() {
+        let encryption = new Encryption();
+
         // let bc_data = sessionStorage.getItem('bcLoginData') ? sessionStorage.getItem('bcLoginData') : "";
         let csc_data = localStorage.getItem('users') ? localStorage.getItem('users') : "";
         let bc_data = localStorage.getItem('users') ? localStorage.getItem('users') : "";
         // console.log(bc_data);
-        let bcmaster_id = sessionStorage.getItem('bcmaster_id');
-
+        
         if(bc_data) {
-            let encryption = new Encryption();
+            let bcmaster_id = JSON.parse(encryption.decrypt(sessionStorage.getItem('bcmaster_id')));
+            // let encryption = new Encryption();
             bc_data = JSON.parse(encryption.decrypt(JSON.parse(bc_data).user));
             // console.log(bc_data);
             this.setState({

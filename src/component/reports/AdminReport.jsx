@@ -100,61 +100,8 @@ class AdminReport extends Component {
         e.target.value.length === 0 && element.classList.remove('active');
     }
 
-    fetchDashboard=(values,page_no)=>{
-
-        const formData = new FormData();
-        let encryption = new Encryption();
-        page_no = page_no ? page_no : '1'
-        if(values != []) {
-            this.setState({
-                searchValues : values
-            });
-            
-            for (const key in values) {
-                if (values.hasOwnProperty(key)) {
-                  if(key == "from_date" || key == "to_date"){
-                    formData.append(key, moment(values[key]).format("YYYY-MM-DD"));
-                  }
-                  else {
-                     formData.append(key, values[key]);
-                  }          
-                }
-              }
-        
-        }
-
-        let bc_data = sessionStorage.getItem('bcLoginData') ? sessionStorage.getItem('bcLoginData') : "";
-        if(bc_data) {
-            bc_data = JSON.parse(encryption.decrypt(bc_data));
-        }
-
-        formData.append('bcmaster_id', sessionStorage.getItem('csc_id') ? "5" : bc_data ? bc_data.agent_id : "" ) 
-        formData.append('page_no', page_no)   
-        formData.append('policy_status', 'complete')
-        formData.append('bc_agent_id', sessionStorage.getItem('csc_id') ? sessionStorage.getItem('csc_id') : bc_data ? bc_data.user_info.data.user.username : "") 
-
-        this.props.loadingStart();
-        axios.post('bc/policy-customer',formData)
-        .then(res=>{
-            let statusCount = []                          //  res.data.data ? res.data.data : []   
-            let policyHolder = []             // res.data.data ? res.data.data.policyHolder : []                      
-            this.setState({
-                statusCount, policyHolder
-            });
-            this.props.loadingStop();
-        }).
-        catch(err=>{
-            this.props.loadingStop();
-            this.setState({
-                statusCount: []
-            });
-        })
-    
-    }
-
     handleSubmit=(values, page_no)=>{
 
-        console.log("2", page_no);
         if (isNaN(page_no)) {
             page_no = 1;
         }
@@ -171,6 +118,7 @@ class AdminReport extends Component {
         } else {
             const formData = new FormData();
             let encryption = new Encryption();
+            let postData = {}
             if(values != []) {
                 this.setState({
                     searchValues : values,
@@ -180,33 +128,39 @@ class AdminReport extends Component {
                 for (const key in values) {
                     if (values.hasOwnProperty(key) && values[key] != "") {
                     if(key == "from_date" || key == "to_date"){
-                        formData.append(key, moment(values[key]).format("YYYY-MM-DD"));
+                        // formData.append(key, moment(values[key]).format("YYYY-MM-DD"));
+                        postData[key] = moment(values[key]).format("YYYY-MM-DD");
                     }
                     else {
-                        formData.append(key, values[key]);
+                        // formData.append(key, values[key]);
+                        postData[key] = values[key];
                     }          
                     }
                 }
             }
 
-            // let bc_data = sessionStorage.getItem('bcLoginData') ? sessionStorage.getItem('bcLoginData') : "";
-            // if(bc_data) {
-            //     bc_data = JSON.parse(encryption.decrypt(bc_data));
-            // }
+            // formData.append('bcmaster_id', this.state.bcmaster_id); // sessionStorage.getItem('csc_id') ? "5" : bc_data ? bc_data.agent_id : "" ) 
+            // formData.append('page', page_no);   
+            // formData.append('policy_status', 'complete');
+            // formData.append('role_id', this.state.role_id);
+            postData['bcmaster_id'] = this.state.bcmaster_id;
+            postData['page'] = page_no;
+            postData['policy_status'] = 'complete';
+            postData['role_id'] = this.state.role_id;
 
-            formData.append('bcmaster_id', this.state.bcmaster_id); // sessionStorage.getItem('csc_id') ? "5" : bc_data ? bc_data.agent_id : "" ) 
-            formData.append('page', page_no);   
-            formData.append('policy_status', 'complete');
-            formData.append('role_id', this.state.role_id);
-            // formData.append('bc_agent_id', sessionStorage.getItem('csc_id') ? sessionStorage.getItem('csc_id') : bc_data ? bc_data.user_info.data.user.username : "") 
+            formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
 
             this.props.loadingStart();
             axios.post('admin/report-list',formData)
             .then(res=>{
-                let statusCount = res.data.data && res.data.data.report ? res.data.data.report[1] : [];   
-                let responseData = res.data.data && res.data.data.report ? res.data.data.report[0].data : []    
-                page_no = res.data.data && res.data.data.report ? res.data.data.report[0].current_page : 1 ;
-                let per_page = res.data.data && res.data.data.report ? res.data.data.report[0].per_page : 10;
+
+                let encryption = new Encryption();
+                let response = JSON.parse(encryption.decrypt(res.data)); 
+
+                let statusCount = response.data && response.data.report ? response.data.report[1] : [];   
+                let responseData = response.data && response.data.report ? response.data.report[0].data : []    
+                page_no = response.data && response.data.report ? response.data.report[0].current_page : 1 ;
+                let per_page = response.data && response.data.report ? response.data.report[0].per_page : 10;
 
                 let policyHolder = [];
                 for (const reportData in responseData) {
@@ -231,32 +185,42 @@ class AdminReport extends Component {
         const formData = new FormData();
         let encryption = new Encryption();
         let values = this.state.searchValues;
+        let postData = {}
 
         if(values != []) {            
             for (const key in values) {
                 if (values.hasOwnProperty(key) && values[key] != "") {
-                  if(key == "from_date" || key == "to_date"){
-                    formData.append(key, moment(values[key]).format("YYYY-MM-DD"));
-                  }
-                  else {
-                     formData.append(key, values[key]);
-                  }          
+                    if(key == "from_date" || key == "to_date"){
+                        // formData.append(key, moment(values[key]).format("YYYY-MM-DD"));
+                        postData[key] = moment(values[key]).format("YYYY-MM-DD");
+                    }
+                    else {
+                        // formData.append(key, values[key]);
+                        postData[key] = values[key];
+                    }          
                 }
             }       
         }
 
-        formData.append('bcmaster_id', this.state.bcmaster_id); // sessionStorage.getItem('csc_id') ? "5" : bc_data ? bc_data.agent_id : "" ) 
+        // formData.append('bcmaster_id', this.state.bcmaster_id); // sessionStorage.getItem('csc_id') ? "5" : bc_data ? bc_data.agent_id : "" ) 
         // formData.append('page_no', 1)   
-        formData.append('policy_status', 'complete')
-        formData.append('role_id', this.state.role_id);
-        // formData.append('bc_agent_id', sessionStorage.getItem('csc_id') ? sessionStorage.getItem('csc_id') : bc_data ? bc_data.user_info.data.user.username : "") 
+        // formData.append('policy_status', 'complete')
+        // formData.append('role_id', this.state.role_id);
+        postData['bcmaster_id'] = this.state.bcmaster_id;
+        postData['policy_status'] = 'complete';
+        postData['role_id'] = this.state.role_id;
+
+        formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
 
         this.props.loadingStart();
         axios.post('admin/report-download',formData)
         .then(res=>{
 
+            let encryption = new Encryption();
+            let response = JSON.parse(encryption.decrypt(res.data)); 
+
             this.props.loadingStop();
-            this.downloadDoc(res.data.data.report_id)
+            this.downloadDoc(response.data.report_id)
             // swal.fire('Report Id');
         }).
         catch(err=>{
@@ -307,11 +271,15 @@ class AdminReport extends Component {
         this.props.loadingStart();
         axios.get('admin/products')
         .then(res => {
-        this.setState({
-            products: res.data.data ? res.data.data : [],
-        });
-        // this.fetchDashboard();
-        this.props.loadingStop();
+        
+            let encryption = new Encryption();
+            let response = JSON.parse(encryption.decrypt(res.data));
+            
+            this.setState({
+                products: response.data ? response.data : [],
+            });
+            // this.fetchDashboard();
+            this.props.loadingStop();
         })
         .catch(err => {
         this.props.loadingStop();
@@ -328,7 +296,11 @@ class AdminReport extends Component {
                 this.props.loadingStart();
                 await axios.get('admin/vendors')
                     .then(res => {
-                        partners = res.data.data ? res.data.data : [];
+                        
+                        let encryption = new Encryption();
+                        let response = JSON.parse(encryption.decrypt(res.data));
+            
+                        partners = response.data ? response.data : [];
                         this.props.loadingStop();
                     })
                     .catch(err => {
@@ -353,8 +325,10 @@ class AdminReport extends Component {
 
     componentDidMount() {
         this.getAllProducts();
-        let role_admin = sessionStorage.getItem('role_admin');
-        let role_details = sessionStorage.getItem('role_details');
+        let encryption = new Encryption();
+
+        let role_admin = JSON.parse(encryption.decrypt(sessionStorage.getItem('role_admin')));
+        let role_details = encryption.decrypt(sessionStorage.getItem('role_details'));
         if (role_admin !== false && role_details !== null) {
             let roleData = JSON.parse(role_details);
             this.getRoleData(roleData);

@@ -38,8 +38,8 @@ const checkLastActionPerformed = (actionTime) => {
     const timeleft = parseInt(actionTime) + 60 * 60 * 1000;   // 60 mins until auto logout
     const diff = timeleft - now;
     const isTimeout = diff < 0;
-    console.log('now-----= ', now);
-    console.log('timeleft--------= ', timeleft);
+    // console.log('now-----= ', now);
+    // console.log('timeleft--------= ', timeleft);
 
     // if (isTimeout) {
     //     //console.log('Logout');
@@ -99,10 +99,13 @@ export const authProcess = (data, onSuccess, onFailure) => {
         axios
             .post('/admin-login', formData)
             .then(response => {
-                if (response.data.is_admin === true) {
-                    dispatch(authSuccess(response.data));
+
+                let res = JSON.parse(encryption.decrypt(response.data));
+                // console.log("Decoded", res);
+                if (res.is_admin === true) {
+                    dispatch(authSuccess(res));
                     if(!!sessionStorage.getItem('type')){
-                        response.data.user_data.type=sessionStorage.getItem('type')
+                        res.user_data.type=sessionStorage.getItem('type')
                     }
                     let loginData;
                     if(data.rememberMe == '1') {
@@ -110,28 +113,28 @@ export const authProcess = (data, onSuccess, onFailure) => {
                     } else {
                         loginData = {email: '', pass: '', rememberMe: ''};
                     }
-                    sessionStorage.setItem('auth_token', response.data.token_type+" "+response.data.token);
-                    sessionStorage.setItem('role_details', JSON.stringify(response.data.role_details));
-                    sessionStorage.setItem('role_admin', response.data.is_admin);
-                    let userrole_data = response.data.admin_details.userrole;
-                    if (userrole_data.bcmaster_id !== 0 || response.data.admin_details.userrole.bcdetails) {
-                        sessionStorage.setItem('logo', response.data.admin_details.userrole.bcdetails.logo);
+                    sessionStorage.setItem('auth_token', res.token_type+" "+res.token);
+                    sessionStorage.setItem('role_details', encryption.encrypt(JSON.stringify(res.role_details)));
+                    sessionStorage.setItem('role_admin', encryption.encrypt(JSON.stringify(res.is_admin)));
+                    let userrole_data = res.admin_details.userrole;
+                    if (userrole_data.bcmaster_id !== 0 || res.admin_details.userrole.bcdetails) {
+                        sessionStorage.setItem('logo', res.admin_details.userrole.bcdetails.logo);
                     } else {
                         sessionStorage.setItem('logo', '');
                     }
-                    sessionStorage.setItem('bcmaster_id', userrole_data.bcmaster_id);
-                    // sessionStorage.setItem('userrole_data', encryption.encrypt(JSON.stringify(response.data.userrole_data)));
+                    sessionStorage.setItem('bcmaster_id', encryption.encrypt(JSON.stringify(userrole_data.bcmaster_id)));
+                    // sessionStorage.setItem('userrole_data', encryption.encrypt(JSON.stringify(res.userrole_data)));
                     
-                    // localStorage.setItem('users', JSON.stringify({ user: response.data.user, permission: response.data.permission, lastAction: Date.now() }));
-                    localStorage.setItem('users', JSON.stringify({ user: encryption.encrypt(JSON.stringify(response.data.user_data)), permission: [], lastAction: Date.now() }));
-                    localStorage.setItem('loginData', JSON.stringify( loginData ));
-                    // var cscData = JSON.parse(response.data.user_data.info);
+                    // localStorage.setItem('users', JSON.stringify({ user: res.user, permission: res.permission, lastAction: Date.now() }));
+                    localStorage.setItem('users', JSON.stringify({ user: encryption.encrypt(JSON.stringify(res.user_data)), permission: [], lastAction: Date.now() }));
+                    localStorage.setItem('loginData', encryption.encrypt(JSON.stringify( loginData )));
+                    // var cscData = JSON.parse(res.user_data.info);
                     // localStorage.setItem('csc_id', cscData["csc_id"]);
                     // localStorage.setItem('agent_name', cscData["fullname"]);
                     // localStorage.setItem('product_id', cscData["productId"]);
 
 
-                    console.log('user_data',response.data.user_data)
+                    // console.log('user_data',res.user_data)
                     onSuccess && onSuccess();
                 } else {
                     dispatch(authFail({data:{message:'User must be Admin to get access to Reports section'}}));
@@ -139,13 +142,14 @@ export const authProcess = (data, onSuccess, onFailure) => {
                 }
             })
             .catch(error => {
-                console.log(error.data)
+                let err = JSON.parse(encryption.decrypt(error.data));
+                // console.log("Decoded", err);
                 if (error.status == 401) {
                     dispatch(authFail({data:{message:'User must be Admin to get access to Reports section'}}));
                     onFailure && onFailure({data:{message:'User must be Admin to get access to Reports section'}});
                 } else if (error.status == 422) {
-                    dispatch(authFail({data:{message:error.data.error}}));
-                    onFailure && onFailure({data:{message:error.data.error}});
+                    dispatch(authFail({data:{message:err.error}}));
+                    onFailure && onFailure({data:{message:err.error}});
                 } else {
                     dispatch(authFail(error));
                     onFailure && onFailure(error);

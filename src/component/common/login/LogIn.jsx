@@ -48,15 +48,18 @@ class LogIn extends Component {
         let bodyClass = [];
         bodyClass.length && document.body.classList.remove(...bodyClass);
         document.body.classList.add("loginBody");
+        let encryption = new Encryption();
 
-        // check remember me option
-        const loginData = JSON.parse(localStorage.getItem('loginData'));
-        if (loginData) {
-            this.setState({
-                email: loginData.email,
-                pass: loginData.pass,
-                rememberMe: loginData.rememberMe ? 1 : 0
-            });
+        if (localStorage.getItem('loginData') && localStorage.getItem('loginData') !== "") {
+            // check remember me option
+            const loginData = JSON.parse(encryption.decrypt(localStorage.getItem('loginData')));
+            if (loginData) {
+                this.setState({
+                    email: loginData.email,
+                    pass: loginData.pass,
+                    rememberMe: loginData.rememberMe ? 1 : 0
+                });
+            }
         }
         
         if(queryString.parse(this.props.location.search).authentication_token) {
@@ -203,7 +206,7 @@ class LogIn extends Component {
     }
 
     handle_AutoSubmit = (value, actions) => {
-        console.log('values', value); 
+        // console.log('values', value); 
         return new Promise(resolve => {
             setTimeout(() => {
                 let values = {}
@@ -217,7 +220,7 @@ class LogIn extends Component {
                 // values.bc_agent_id= bcLoginData.bc_agent_id ? bcLoginData.bc_agent_id : ""
                 
                 // this.setState({ errMsg: '' });
-                console.log("values-- ", values)
+                // console.log("values-- ", values)
                 this.props.onFormSubmit(values,
                     () => {
                         this.props.loadingStop();
@@ -250,7 +253,7 @@ class LogIn extends Component {
 
         });
 
-        console.log("queryString.parse(this.props.location.search)---", )
+        // console.log("queryString.parse(this.props.location.search)---", )
         return (
             <BaseComponent>
                 <div className="d-flex justify-content-center brand lginpg">
