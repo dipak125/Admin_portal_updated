@@ -87,7 +87,8 @@ class AdminReport extends Component {
         role_id: 0,
         partners: [],
         page_no: 1,
-        per_page: 10
+        per_page: 10,
+        last_page: 1
     }
 
     changePlaceHoldClassAdd(e) {
@@ -150,6 +151,8 @@ class AdminReport extends Component {
 
             formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
 
+            console.log("POST dATA SUBMIT--------------- ", postData);
+
             this.props.loadingStart();
             axios.post('admin/report-list',formData)
             .then(res=>{
@@ -157,18 +160,19 @@ class AdminReport extends Component {
                 let encryption = new Encryption();
                 let response = JSON.parse(encryption.decrypt(res.data)); 
 
-                let statusCount = response.data && response.data.report ? response.data.report[1] : [];   
-                let responseData = response.data && response.data.report ? response.data.report[0].data : []    
-                page_no = response.data && response.data.report ? response.data.report[0].current_page : 1 ;
-                let per_page = response.data && response.data.report ? response.data.report[0].per_page : 10;
+                let statusCount = response.data && response.data.report ? response.data.report : [];   
+                let responseData = response.data && response.data.report ? response.data.report.data : []    
+                page_no = response.data && response.data.report ? response.data.report.current_page : 1 ;
+                let last_page = response.data && response.data.report ? response.data.report.last_page : 1 ;
+                let per_page = response.data && response.data.report ? response.data.report.per_page : 10;
 
                 let policyHolder = [];
                 for (const reportData in responseData) {
                     policyHolder.push(responseData[reportData]);
                 }
-                console.log(policyHolder);
+                console.log("dercypt-Resp--------------- ", response);
                 this.setState({
-                    statusCount, policyHolder, page_no, per_page
+                    statusCount, policyHolder, page_no, per_page, last_page
                 });
                 this.props.loadingStop();
             }).
@@ -200,17 +204,14 @@ class AdminReport extends Component {
                     }          
                 }
             }       
-        }
-
-        // formData.append('bcmaster_id', this.state.bcmaster_id); // sessionStorage.getItem('csc_id') ? "5" : bc_data ? bc_data.agent_id : "" ) 
-        // formData.append('page_no', 1)   
-        // formData.append('policy_status', 'complete')
-        // formData.append('role_id', this.state.role_id);
+        } 
+        postData['page'] = this.state.page_no;
         postData['bcmaster_id'] = this.state.bcmaster_id;
         postData['policy_status'] = 'complete';
         postData['role_id'] = this.state.role_id;
 
         formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
+        console.log("download postdata---------------- ", postData)
 
         this.props.loadingStart();
         axios.post('admin/report-download',formData)
@@ -218,12 +219,14 @@ class AdminReport extends Component {
 
             let encryption = new Encryption();
             let response = JSON.parse(encryption.decrypt(res.data)); 
-
+            console.log("download resp---------------- ", response)
             this.props.loadingStop();
             this.downloadDoc(response.data.report_id)
             // swal.fire('Report Id');
         }).
         catch(err=>{
+            let error = JSON.parse(encryption.decrypt(err.data)); 
+            console.log("download error---------------- ", error)
             this.props.loadingStop();
             this.setState({
                 statusCount: 1
@@ -233,7 +236,7 @@ class AdminReport extends Component {
 
     downloadDoc = (refNumber) => {
         let file_path = `${process.env.REACT_APP_PAYMENT_URL}/admin_report_download.php?report_id=${refNumber}&bcmaster_id=${this.state.bcmaster_id}`
-        console.log(file_path);
+        // console.log(file_path);
         const { policyId } = this.props.match.params
         const url = file_path;
         const pom = document.createElement('a');
@@ -248,11 +251,6 @@ class AdminReport extends Component {
     }
 
     onPageChange = async (page, sizePerPage) => {
-        // console.log("1", page);
-        // await this.setState({
-        //     page_no: page
-        // });
-
         this.handleSubmit(this.state.searchValues, page);
     }
 
@@ -337,8 +335,8 @@ class AdminReport extends Component {
 
 
     render() {
-        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page } = this.state
-        var totalRecord = statusCount ? statusCount.total_count : 1
+        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page, last_page } = this.state
+        var totalRecord = statusCount ? statusCount.total : 1
         // var page_no = page_no ? page_no : 1 
 
         // console.log("StatusCount", statusCount, statusCount.total_count)
