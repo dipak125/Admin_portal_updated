@@ -16,6 +16,9 @@ import Collapsible from 'react-collapsible';
 import { Formik, Field, Form, FieldArray } from "formik";
 import * as Yup from "yup";
 import DatePicker from "react-datepicker";
+import { registerLocale, setDefaultLocale } from "react-datepicker";
+import enGb from 'date-fns/locale/en-GB';
+registerLocale('enGb', enGb)
 
 const actionFormatter = (refObj) => (cell, row, enumObject) => {
     return (
@@ -49,7 +52,10 @@ function productFormatter(cell) {
     return (cell ? (cell.vehicletype ? cell.vehicletype.name : null): null);
 } 
 
-const newInitialValues = {}
+const newInitialValues = {
+    to_date : "",
+    from_date : ""
+}
 
 const ComprehensiveValidation = Yup.object().shape({
     from_date: Yup.string().nullable().required("Please select From Date"),
@@ -90,7 +96,7 @@ class AdminReport extends Component {
         per_page: 10,
         last_page: 1
     }
-
+    
     changePlaceHoldClassAdd(e) {
         let element = e.target.parentElement;
         element.classList.add('active');
@@ -375,7 +381,7 @@ class AdminReport extends Component {
                                 {({ values, errors, setFieldValue, setFieldTouched, isValid, isSubmitting, touched }) => {
 
                                 return (
-                                    <Form>
+                                    <Form autoComplete="off">
                                         <div className="rghtsideTrigr collinput m-b-30">
                                             {/* <div>
                                                 {errors.from_date}
@@ -395,26 +401,25 @@ class AdminReport extends Component {
                                                             </Col>
                                                             <Col sm={12} md={8} lg={8}>
                                                                 <FormGroup>
-                                                                    <DatePicker
-                                                                        name="from_date"
-                                                                        // minDate={new Date()}
-                                                                        maxDate={new Date()}
-                                                                        autoComplete="off"
-                                                                        dateFormat="dd MMM yyyy"
-                                                                        placeholderText="Start Date"
-                                                                        peekPreviousMonth
-                                                                        peekPreviousYear
-                                                                        showMonthDropdown
-                                                                        showYearDropdown
-                                                                        dropdownMode="select"
-                                                                        className="datePckr inputfs12"
-                                                                        selected={values.from_date }
-                                                                        onChange={(val) => {
-                                                                            setFieldTouched('from_date');
-                                                                            setFieldValue('from_date', val); 
-                                                                        }}
-                                                                        
-                                                                    />
+                                                                <DatePicker
+                                                                    name="from_date"
+                                                                    // minDate={new Date(minDate)}
+                                                                    locale="enGb"
+                                                                    maxDate={new Date()}
+                                                                    dateFormat="dd MMM yyyy"
+                                                                    placeholderText="Start Date"
+                                                                    peekPreviousMonth
+                                                                    peekPreviousYear
+                                                                    showMonthDropdown
+                                                                    showYearDropdown
+                                                                    dropdownMode="select"
+                                                                    className="datePckr inputfs12"
+                                                                    selected={values.from_date}
+                                                                    onChange={(val) => {
+                                                                        setFieldTouched('from_date');
+                                                                        setFieldValue('from_date', val); 
+                                                                    }}
+                                                                /> 
                                                                     {errors.from_date || !touched.from_date  ? (
                                                                         <span className="errorMsg">{errors.from_date }</span>
                                                                     ) : null}
@@ -436,9 +441,9 @@ class AdminReport extends Component {
                                                                 <FormGroup>
                                                                     <DatePicker
                                                                         name="to_date"
-                                                                        // minDate={new Date()}
+                                                                        // minDate={new Date(minDate)}
+                                                                        locale="enGb"
                                                                         maxDate={new Date()}
-                                                                        autoComplete="off"
                                                                         dateFormat="dd MMM yyyy"
                                                                         placeholderText="End Date"
                                                                         peekPreviousMonth
@@ -447,13 +452,12 @@ class AdminReport extends Component {
                                                                         showYearDropdown
                                                                         dropdownMode="select"
                                                                         className="datePckr inputfs12"
-                                                                        selected={values.to_date }
+                                                                        selected={values.to_date}
                                                                         onChange={(val) => {
                                                                             setFieldTouched('to_date');
                                                                             setFieldValue('to_date', val); 
                                                                         }}
-                                                                        
-                                                                    />
+                                                                    /> 
                                                                     {errors.to_date || !touched.to_date  ? (
                                                                         <span className="errorMsg">{errors.to_date }</span>
                                                                     ) : null}
