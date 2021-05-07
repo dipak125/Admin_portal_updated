@@ -82,37 +82,37 @@ class LogIn extends Component {
             this.callLogin(bcLoginData);          
         }
         else{
-            this.fetchCustDetail()
+            // this.fetchCustDetail()
         }
         
     }
 
-    fetchCustDetail=()=>{
+    // fetchCustDetail=()=>{
 
-        this.props.loadingStart();
-        axiosBCintegration.get('all-customer')
-        .then(res=>{
-            if(res.data.error == false) {
-                let respArray = res.data.data ? res.data.data : []                        
-                this.setState({
-                    respArray
-                });
-            }
-            else {
-                this.setState({
-                    respArray: []
-                });
-            }           
-            this.props.loadingStop();
-        }).
-        catch(err=>{
-            this.props.loadingStop();
-            this.setState({
-                respArray: []
-            });
-        })
+    //     this.props.loadingStart();
+    //     axiosBCintegration.get('all-customer')
+    //     .then(res=>{
+    //         if(res.data.error == false) {
+    //             let respArray = res.data.data ? res.data.data : []                        
+    //             this.setState({
+    //                 respArray
+    //             });
+    //         }
+    //         else {
+    //             this.setState({
+    //                 respArray: []
+    //             });
+    //         }           
+    //         this.props.loadingStop();
+    //     }).
+    //     catch(err=>{
+    //         this.props.loadingStop();
+    //         this.setState({
+    //             respArray: []
+    //         });
+    //     })
     
-    }
+    // }
 
     componentWillReceiveProps(nextProps) {
         // if (nextProps.match.path === '/login' && !nextProps.loading) {
