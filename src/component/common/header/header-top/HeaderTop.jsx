@@ -13,7 +13,7 @@ import Blink from 'react-blink-text';
 class HeaderTop extends Component {
 
     state = {
-        logo: sessionStorage.getItem('logo') && sessionStorage.getItem('logo') != "undefined" ? sessionStorage.getItem('logo') : "",
+        logo: sessionStorage.getItem('logo') && sessionStorage.getItem('logo') != null ? sessionStorage.getItem('logo') : "",
         bc_data: {},
         csc_data: {},
         bcmaster_id: 0
@@ -36,7 +36,6 @@ class HeaderTop extends Component {
 
 
     componentWillUpdate(nextProps, nextState) {
-        // logo = sessionStorage.getItem('logo') && sessionStorage.getItem('logo') != "undefined" ? sessionStorage.getItem('logo') : ""
         
     }
 
@@ -73,7 +72,8 @@ class HeaderTop extends Component {
     render() {
         // console.log("BC_data---", bc_data.user_info )
         const { logo, bc_data, csc_data, bcmaster_id } = this.state
-        
+        // console.log("bc_data---------------- ", bc_data)
+        // console.log("bcmaster_id---------------- ", bcmaster_id)
         return (
             <>
                 <section className="container-fluid headerTop d-flex justify-content-between">
@@ -107,7 +107,7 @@ class HeaderTop extends Component {
                         <Dropdown alignRight>
                             <Dropdown.Toggle variant="" id="dropdown-basic">
                                 <div className="d-flex topUserBtn">
-                                {sessionStorage.getItem("auth_token") && bc_data && bcmaster_id != 0 && this.props.flag !== "logout" ?
+                                {sessionStorage.getItem("auth_token") && bc_data && this.props.flag !== "logout" ?
                                     <div className="align-self-center userNameImg">
                                         Welcome {bc_data.name}                                        
                                     </div>
@@ -123,10 +123,7 @@ class HeaderTop extends Component {
                                     <img src={require(`../../../../assets/images/${logo}`)} alt="" className="notiBell"/>
                                     : null}
                                     </div>
-                                    
-                                    {/* <div className="align-self-center d-none d-sm-block">
-                                    <img src={require('../../../../assets/images/shapes-and-symbols.svg')} alt="" />
-                                    </div> */}
+
                                 </div>
                             </Dropdown.Toggle>
                             {/* <Dropdown.Menu>
