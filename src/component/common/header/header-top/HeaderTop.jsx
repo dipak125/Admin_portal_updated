@@ -7,8 +7,6 @@ import axios from "../../../../shared/axios"
 import Encryption from '../../../../shared/payload-encryption';
 import Blink from 'react-blink-text';
 
-// let logo = sessionStorage.getItem('logo') && sessionStorage.getItem('logo') != "undefined" ? sessionStorage.getItem('logo') : "search.svg"
-
 
 class HeaderTop extends Component {
 

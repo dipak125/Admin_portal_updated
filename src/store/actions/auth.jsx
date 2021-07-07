@@ -95,13 +95,13 @@ export const authProcess = (data, onSuccess, onFailure) => {
         let encryption = new Encryption();
         formData.append('enc_data',encryption.encrypt(JSON.stringify(post_data_obj)))
 
-        // console.log('post-data-------- ', post_data_obj)
+        // .post('/login', formData)
         axios
             .post('/admin-login', formData)
             .then(response => {
 
                 let res = JSON.parse(encryption.decrypt(response.data));
-                // console.log("Decoded------------ ", res);
+                console.log("Decoded----", res);
                 if (res.is_admin === true) {
                     dispatch(authSuccess(res));
                     if(!!sessionStorage.getItem('type')){
@@ -118,7 +118,7 @@ export const authProcess = (data, onSuccess, onFailure) => {
                     sessionStorage.setItem('role_admin', encryption.encrypt(JSON.stringify(res.is_admin)));
                     let userrole_data = res.admin_details.userrole;
                     if (userrole_data.bcmaster_id !== 0 || res.admin_details.userrole.bcdetails) {
-                        sessionStorage.setItem('logo', res.admin_details.userrole.bcdetails.logo);
+                        sessionStorage.setItem('logo', res.admin_details.userrole.bcdetails.logo ? res.admin_details.userrole.bcdetails.logo : "");
                     } else {
                         sessionStorage.setItem('logo', '');
                     }
@@ -143,7 +143,7 @@ export const authProcess = (data, onSuccess, onFailure) => {
             })
             .catch(error => {
                 let err = JSON.parse(encryption.decrypt(error.data));
-                console.log("Decoded---err------------ ", err);
+                console.log("Decoded-------", err);
                 if (error.status == 401) {
                     dispatch(authFail({data:{message:'User must be Admin to get access to Reports section'}}));
                     onFailure && onFailure({data:{message:'User must be Admin to get access to Reports section'}});

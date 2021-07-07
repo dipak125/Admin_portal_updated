@@ -692,18 +692,13 @@ class AdminReport extends Component {
                                         <TableHeaderColumn dataField="State"  >State</TableHeaderColumn>
                                         
                                         <TableHeaderColumn dataField='GWP' dataSort>GWP</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='NetPremium' dataSort>Net Premium</TableHeaderColumn>
                                         <TableHeaderColumn dataField="ProductName">Product Name</TableHeaderColumn>
                                         <TableHeaderColumn dataField="VehicleDetails">Vehicle Details</TableHeaderColumn>
                                         <TableHeaderColumn dataField="RegistrationNo">Rgst. No</TableHeaderColumn>
                                         <TableHeaderColumn dataField="PaymentDate">Pay Date</TableHeaderColumn>
                                         
-                                        <TableHeaderColumn dataField="TxnId">Order Id / Txn ID</TableHeaderColumn> 
-                                        {/* 
-                                        <TableHeaderColumn width='100px' tdStyle={{ whiteSpace: 'normal', width: '120px'}} dataField="request_data" dataFormat={quoteFormatter} >Quote Number</TableHeaderColumn>
-                                        <TableHeaderColumn width='100px' tdStyle={{ whiteSpace: 'normal', width: '120px'}} dataField="request_data" dataFormat={premiumFormatter} >Net Premium</TableHeaderColumn> */}
-                                        
-
-                                        {/* <TableHeaderColumn width='100px'  dataField="reference_no" isKey dataAlign="center" dataFormat={ actionFormatter(this) }>Download</TableHeaderColumn> */}
+                                        <TableHeaderColumn dataField="TxnId">Order Id / Txn ID</TableHeaderColumn>   
 
                                     </BootstrapTable>
                                 </div>
