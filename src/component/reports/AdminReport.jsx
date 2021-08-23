@@ -690,9 +690,9 @@ class AdminReport extends Component {
                                         <TableHeaderColumn dataField="PolicyNumber" >Policy No</TableHeaderColumn>
                                         <TableHeaderColumn dataField="CustomerName"  >Customer Name</TableHeaderColumn>
                                         <TableHeaderColumn dataField="State"  >State</TableHeaderColumn>
-                                        
-                                        <TableHeaderColumn dataField='GWP' dataSort>GWP</TableHeaderColumn>
+  
                                         <TableHeaderColumn dataField='NetPremium' dataSort>Net Premium</TableHeaderColumn>
+                                        <TableHeaderColumn dataField='GWP' dataSort>GWP</TableHeaderColumn>
                                         <TableHeaderColumn dataField="ProductName">Product Name</TableHeaderColumn>
                                         <TableHeaderColumn dataField="VehicleDetails">Vehicle Details</TableHeaderColumn>
                                         <TableHeaderColumn dataField="RegistrationNo">Rgst. No</TableHeaderColumn>
