@@ -59,26 +59,7 @@ const newInitialValues = {
 
 const ComprehensiveValidation = Yup.object().shape({
     from_date: Yup.string().nullable().required("Please select From Date"),
-    // to_date: Yup.string().required("Please select To Date"),
     to_date: Yup.string().nullable().required("Please select To Date"),
-        // .when(
-        //     'from_date',
-        //     (from_date, schema) => 
-        //     from_date && schema.max(moment(from_date).add(1,'month'),
-        //     'To Date should be within 1 month of From Date')
-        // ),
-    // .test(
-    //     "to_date",
-    //     "To Date should be within 1 month of From Date",
-    //     value => {
-    //         const refdate = Yup.ref("from_date");
-    //         return moment(refdate).diff(moment(value),'month') > 1;
-    //     }
-    //     // function(v) {
-    //     //     const ref = Yup.ref("contactNo");
-    //     //     return v !== this.resolve(ref);
-    //     // }
-    //   ),
     agent_id: Yup.string().max(15, "Agent Id can be maximum 15 characters")
 })
 
@@ -107,6 +88,10 @@ class AdminReport extends Component {
         e.target.value.length === 0 && element.classList.remove('active');
     }
 
+    convertUTCToTimezone = (utcDate, timezone = '+05:30', dateFormat = 'DD-MM-YYYY HH:mm') => {
+        return moment(utcDate).utcOffset(timezone).format(dateFormat);
+    }
+
     handleSubmit=(values, page_no)=>{
 
         if (isNaN(page_no)) {
@@ -115,8 +100,6 @@ class AdminReport extends Component {
         let fromDate = moment(values['from_date']);
         let toDate = moment(values['to_date']);
         let diffMon = toDate.diff(fromDate, 'days');
-        // let page_no = this.state.page_no;
-        // console.log(diffMon, fromDate, toDate);
 
         if (fromDate > toDate) {
             swal(' From Date should be less than To Date ');
@@ -135,21 +118,15 @@ class AdminReport extends Component {
                 for (const key in values) {
                     if (values.hasOwnProperty(key) && values[key] != "") {
                     if(key == "from_date" || key == "to_date"){
-                        // formData.append(key, moment(values[key]).format("YYYY-MM-DD"));
                         postData[key] = moment(values[key]).format("YYYY-MM-DD");
                     }
                     else {
-                        // formData.append(key, values[key]);
                         postData[key] = values[key];
                     }          
                     }
                 }
             }
 
-            // formData.append('bcmaster_id', this.state.bcmaster_id); // sessionStorage.getItem('csc_id') ? "5" : bc_data ? bc_data.agent_id : "" ) 
-            // formData.append('page', page_no);   
-            // formData.append('policy_status', 'complete');
-            // formData.append('role_id', this.state.role_id);
             postData['bcmaster_id'] = this.state.bcmaster_id;
             postData['page'] = page_no;
             postData['policy_status'] = 'complete';
@@ -174,6 +151,8 @@ class AdminReport extends Component {
 
                 let policyHolder = [];
                 for (const reportData in responseData) {
+                    let formatedDate = this.convertUTCToTimezone(responseData[reportData]['PaymentDate']);
+                    responseData[reportData]['PaymentDate'] = formatedDate;
                     policyHolder.push(responseData[reportData]);
                 }
                 console.log("dercypt-Resp--------------- ", response);
