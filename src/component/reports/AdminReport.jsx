@@ -88,7 +88,7 @@ class AdminReport extends Component {
         e.target.value.length === 0 && element.classList.remove('active');
     }
 
-    convertUTCToTimezone = (utcDate, timezone = '+05:30', dateFormat = 'DD-MM-YYYY HH:mm') => {
+    convertUTCToTimezone = (utcDate, timezone = '+05:30', dateFormat = 'DD-MM-YYYY hh:mm') => {
         return moment(utcDate).utcOffset(timezone).format(dateFormat);
     }
 
