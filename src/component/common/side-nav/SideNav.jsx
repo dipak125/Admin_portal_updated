@@ -7,6 +7,11 @@ import Encryption from "../../../shared/payload-encryption";
 import { withRouter } from "react-router-dom";
 
 class SideNav extends Component {
+
+  state = {
+    bcmaster_id : ''
+  }
+
   handleLogout = () => {
     const formData = new FormData();
     let encryption = new Encryption();
@@ -37,8 +42,20 @@ class SideNav extends Component {
         // this.props.loadingStop();
       });
   };
+  
+  componentDidMount() {
+    let encryption = new Encryption();
+    let bcmaster_id = sessionStorage.getItem("bcmaster_id") ? sessionStorage.getItem("bcmaster_id") : "";
+    if (bcmaster_id) {
+      bcmaster_id = JSON.parse(encryption.decrypt(bcmaster_id));
+    }
+    this.setState({
+      bcmaster_id
+    })
+  }
 
   render() {
+    let { bcmaster_id } = this.state
     return (
       <>
         <nav className="flex-fill leftNav">
@@ -54,8 +71,20 @@ class SideNav extends Component {
                 Admin 
               </Link>
             </li>
-            
+            {bcmaster_id && bcmaster_id == 3 || bcmaster_id == 6 ? 
+            <li>
+              <Link to="/upload-users" activeClassName="active">
+                <span className="leftIcon01">
+                  <img
+                    src={require("../../../assets/images/support.png")}
+                    alt=""
+                  />
+                </span>
+                Add User 
+              </Link>
+            </li> : null}
           </ul>
+          
 
           <button className="btn-lg" onClick={this.handleLogout}>
             <a activeClassName="active">

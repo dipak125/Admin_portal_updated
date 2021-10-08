@@ -407,6 +407,10 @@ const Reports = Loadable({
     loading: () => loadingContent
 });
 
+const UploadUsers = Loadable({
+    loader: () => import(/*webpackChunkName: "Products" */"../users/UploadUsers"),
+    loading: () => loadingContent
+});
 
 class Routes extends Component {
     render() {
@@ -419,7 +423,8 @@ class Routes extends Component {
                         <Route exact path="/logout" component={Logout} /> 
                         <PrivateRoute exact path="/Error" component={Error} />
 
-                        <PrivateRoute exact path="/Reports" component={Reports} />  
+                        <PrivateRoute exact path="/Reports" component={Reports} />
+                        <PrivateRoute exact path="/upload-users" component={UploadUsers} />
                         <Redirect from="/" to="/Reports" />
                     </Switch>
                 </HashRouter>
