@@ -16,12 +16,16 @@ import axiosBCintegration from "../../../shared/axiosBCintegration"
 import Encryption from '../../../shared/payload-encryption';
 import queryString from 'query-string';
 import swal from 'sweetalert';
+import { localeData } from "moment";
+
+
 
 const initialValues = {
     userId: "",
     password: "",
     broker_id: ""
 };
+
 
 const loginvalidation = Yup.object().shape({
     userId: Yup.string().required("Please enter email id"),
@@ -38,13 +42,37 @@ class LogIn extends Component {
         rememberMe: 0,
         errMsg: null,
         respArray: [],
-        broker_id: ""
+        broker_id: "",
+        captchaSuccess: false
     }
 
+    randomNums=()=>{
+        let rand_num1 = Math.floor(Math.random() * 10) + 1;  
+        let rand_num2 = Math.floor(Math.random() * 10) + 1;
+        document.getElementById("digit1").innerHTML = rand_num1; 
+        document.getElementById("digit2").innerHTML = rand_num2;
+        document.getElementById("answer").value = "";
+        this.setState({captchaSuccess: false})
+    
+    }
+
+    addNums=()=>{
+        let answer = document.getElementById("answer").value;
+        let digit1 = parseInt(document.getElementById("digit1").innerHTML);
+        let digit2 = parseInt(document.getElementById("digit2").innerHTML);
+        let sum = digit1 + digit2;  
+       if(answer == sum) {
+        this.setState({captchaSuccess: true})
+       }
+       else {
+        this.setState({captchaSuccess: false})
+       }
+    }
 
     componentDidMount() {
         localStorage.clear()
         sessionStorage.removeItem('logo') 
+        this.randomNums()
         let bodyClass = [];
         bodyClass.length && document.body.classList.remove(...bodyClass);
         document.body.classList.add("loginBody");
@@ -87,32 +115,6 @@ class LogIn extends Component {
         
     }
 
-    // fetchCustDetail=()=>{
-
-    //     this.props.loadingStart();
-    //     axiosBCintegration.get('all-customer')
-    //     .then(res=>{
-    //         if(res.data.error == false) {
-    //             let respArray = res.data.data ? res.data.data : []                        
-    //             this.setState({
-    //                 respArray
-    //             });
-    //         }
-    //         else {
-    //             this.setState({
-    //                 respArray: []
-    //             });
-    //         }           
-    //         this.props.loadingStop();
-    //     }).
-    //     catch(err=>{
-    //         this.props.loadingStop();
-    //         this.setState({
-    //             respArray: []
-    //         });
-    //     })
-    
-    // }
 
     componentWillReceiveProps(nextProps) {
         // if (nextProps.match.path === '/login' && !nextProps.loading) {
@@ -128,39 +130,6 @@ class LogIn extends Component {
         }
     }
 
-    handleSubmit = (values, actions) => {
-        // sessionStorage.removeItem('logo') 
-        sessionStorage.removeItem('bcLoginData')
-        const formData = new FormData();
-        this.props.loadingStart();
-        formData.append('username',values.userId)
-        formData.append('password',values.password)
-        formData.append('bcmaster_id',values.broker_id)
-
-        axiosBCintegration.post('bc-login', formData)
-        .then(res=>{
-            
-            if(res.data.error == false) {
-                let bcLoginData = res.data.data ? res.data.data : []                      
-                this.fetchTokenDetails(bcLoginData.token)
-                actions.setSubmitting(false)
-            }
-            else {
-                sessionStorage.removeItem('bcLoginData');
-                actions.setSubmitting(false)
-                this.props.loadingStop();
-            }
-            
-            
-        }).
-        catch(err=>{
-            this.props.loadingStop();
-            actions.setSubmitting(false)
-            sessionStorage.removeItem('bcLoginData');
-        })
-
-
-    }
 
     fetchTokenDetails= (token) => {
 
@@ -216,26 +185,28 @@ class LogIn extends Component {
                 values.password= value.password;
                 values.bc_id= sessionStorage.getItem('csc_id')
                 values.user_type= sessionStorage.getItem('type')
-                // values.agent_id=  bcLoginData.agent_id ? bcLoginData.agent_id : ""
-                // values.bc_agent_id= bcLoginData.bc_agent_id ? bcLoginData.bc_agent_id : ""
-                
-                // this.setState({ errMsg: '' });
-                // console.log("values-- ", values)
-                this.props.onFormSubmit(values,
-                    () => {
-                        this.props.loadingStop();
-                        this.props.history.push('/Reports');
-                    },
-                    (err) => {
-                        this.props.loadingStop();
-                        if (err.data.message) {
-                            this.setState({ errMsg: err.data.message });
-                        } else {
-                            // console.log(err.data);
+                if(this.state.captchaSuccess) {
+                    this.props.onFormSubmit(values,
+                        () => {
+                            this.props.loadingStop();
+                            this.props.history.push('/Reports');
+                        },
+                        (err) => {
+                            this.props.loadingStop();
+                            if (err.data.message) {
+                                this.setState({ errMsg: err.data.message });
+                            } else {
+                                // console.log(err.data);
+                            }
                         }
-                    }
-                );
-                actions.setSubmitting(false);
+                    );
+                    actions.setSubmitting(false);
+                }      
+                else {
+                    this.props.loadingStop();
+                    actions.setSubmitting(false);
+                    swal("Invalid Captcha")
+                }                
             }
             , 20)
         })
@@ -244,7 +215,7 @@ class LogIn extends Component {
 
     render() {
         //console.log('state', this.state);
-        const { email, pass, rememberMe, broker_id } = this.state;
+        const { email, pass, rememberMe, broker_id, captchaSuccess } = this.state;
 
         const newInitialValues = Object.assign(initialValues, {
             userId: email ? email : '',
@@ -336,6 +307,13 @@ class LogIn extends Component {
                                         <Row>
                                            <Col>&nbsp;</Col>
                                         </Row>
+                                        <Row className="show-grid">
+                                            <Col md={12}>
+                                            <strong id="digit1"></strong> + <strong id="digit2"></strong> = &nbsp;
+                                            <input type="text" id="answer" onChange={this.addNums}/> &nbsp;&nbsp;
+                                            <img src={require('../../../assets/images/circular-arrow.png')} alt="" onClick={this.randomNums} />
+                                            </Col>
+                                        </Row>
                                         <Row>
                                            <Col>&nbsp;</Col>
                                         </Row>
@@ -364,7 +342,7 @@ class LogIn extends Component {
                                                     {isSubmitting ? "Signing In..." : "Sign In"}
                                                 </Button>
                                             </Col>
-                                        </Row>
+                                        </Row> 
                                     </Form>
                                 );
                             }}
