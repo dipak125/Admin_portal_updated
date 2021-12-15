@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component , Fragment} from 'react';
 import BaseComponent from '.././BaseComponent';
 import { Row, Col, Modal, Button, FormGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -54,13 +54,20 @@ function productFormatter(cell) {
 
 const newInitialValues = {
     to_date : "",
-    from_date : ""
+    from_date : "",
+    batch_id: ""
 }
 
 const ComprehensiveValidation = Yup.object().shape({
     from_date: Yup.string().nullable().required("Please select From Date"),
     to_date: Yup.string().nullable().required("Please select To Date"),
-    agent_id: Yup.string().max(15, "Agent Id can be maximum 15 characters")
+    agent_id: Yup.string().max(15, "Agent Id can be maximum 15 characters"),
+    batch_id: Yup.string().when(['product_type'], {
+        is: product_type => product_type == '2',
+        then: Yup.string().required('Please select batch'),
+        otherwise: Yup.string()
+    })
+    
 })
 
 class AdminReport extends Component {
@@ -75,7 +82,9 @@ class AdminReport extends Component {
         partners: [],
         page_no: 1,
         per_page: 10,
-        last_page: 1
+        last_page: 1,
+        intermediaryVendorList: [],
+        batchIds: []
     }
     
     changePlaceHoldClassAdd(e) {
@@ -142,6 +151,7 @@ class AdminReport extends Component {
 
                 let encryption = new Encryption();
                 let response = JSON.parse(encryption.decrypt(res.data)); 
+                console.log("submit response --------------- ", response);
 
                 let statusCount = response.data && response.data.report ? response.data.report : [];   
                 let responseData = response.data && response.data.report ? response.data.report.data : []    
@@ -163,6 +173,9 @@ class AdminReport extends Component {
             }).
             catch(err=>{
                 this.props.loadingStop();
+                let encryption = new Encryption();
+                let response = JSON.parse(encryption.decrypt(err.data)); 
+                console.log("submit err --------------- ", response);
                 this.setState({
                     statusCount: []
                 });
@@ -257,7 +270,7 @@ class AdminReport extends Component {
         
             let encryption = new Encryption();
             let response = JSON.parse(encryption.decrypt(res.data));
-            
+            console.log("resp ----------- ", response)
             this.setState({
                 products: response.data ? response.data : [],
             });
@@ -266,6 +279,93 @@ class AdminReport extends Component {
         })
         .catch(err => {
         this.props.loadingStop();
+        let encryption = new Encryption();
+        let response = JSON.parse(encryption.decrypt(err.data));
+        console.log("err ----------- ", response)
+        });
+    }
+
+    getVendors = (partner_id) => {
+        this.props.loadingStart();
+        axios.get('admin/intermediaryVendors')
+        .then(res => {
+        
+            let encryption = new Encryption();
+            let response = JSON.parse(encryption.decrypt(res.data));
+            console.log("resp ---- ", response)
+            this.setState({
+                intermediaryVendorList: response.data ? response.data : [],
+            });
+            // this.fetchDashboard();
+            this.props.loadingStop();
+        })
+        .catch(err => {
+        this.props.loadingStop();
+        let encryption = new Encryption();
+        let error = JSON.parse(encryption.decrypt(err.data));
+        console.log("err resp ---- ", error)
+        });
+    }
+
+    getUserId = (parent_id) => {
+        const formData = new FormData();
+        let encryption = new Encryption();
+        let postData = {}
+        postData['parent_id'] = parent_id;
+
+        formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
+        console.log("postdata---------------- ", postData)
+
+        this.props.loadingStart();
+        axios.post('admin/getUserId',formData)
+        .then(res => {
+        
+            let encryption = new Encryption();
+            let response = JSON.parse(encryption.decrypt(res.data));
+            console.log("resp ---- ", response)
+            this.setState({
+                userId: response.data ? response.data : [],
+            });
+            // this.fetchDashboard();
+            this.props.loadingStop();
+        })
+        .catch(err => {
+        this.props.loadingStop();
+        let encryption = new Encryption();
+        let error = JSON.parse(encryption.decrypt(err.data));
+        console.log("err resp ---- ", error)
+        });
+    }
+
+    getBatchID = (user_id,from_date,to_date) => {
+        const formData = new FormData();
+        let encryption = new Encryption();
+        let postData = {}
+        postData['from_date'] = moment(from_date).format("YYYY-MM-DD");
+        postData['to_date'] = moment(to_date).format("YYYY-MM-DD");
+        postData['user_id'] = user_id;
+
+        formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
+        console.log("download postdata---------------- ", postData)
+
+        this.props.loadingStart();
+        axios.post('admin/getBatchId',formData)
+        .then(res => {
+        
+            let encryption = new Encryption();
+            let response = JSON.parse(encryption.decrypt(res.data));
+            console.log("resp ---- ", response)
+            this.setState({
+                batchIds: response.data ? response.data : [],
+            });
+            // this.fetchDashboard();
+            this.props.loadingStop();
+        })
+        .catch(err => {
+        this.props.loadingStop();
+        let encryption = new Encryption();
+        let error = JSON.parse(encryption.decrypt(err.data));
+        console.log("err resp ---- ", error)
         });
     }
 
@@ -320,7 +420,7 @@ class AdminReport extends Component {
 
 
     render() {
-        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page, last_page } = this.state
+        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page, last_page, intermediaryVendorList, batchIds, userId } = this.state
         var totalRecord = statusCount ? statusCount.total : 1
         // var page_no = page_no ? page_no : 1 
 
@@ -465,10 +565,16 @@ class AdminReport extends Component {
                                                                             autoComplete="off"
                                                                             value={values.partner_id}
                                                                             className="formGrp"
+                                                                            onChange= {(e)=>{
+                                                                                if(e.target.value == '12') {
+                                                                                    this.getVendors(e.target.value)
+                                                                                }
+                                                                                setFieldValue('partner_id', e.target.value)
+                                                                            }}
                                                                         >
                                                                         <option value="">Partners</option>
-                                                                        {partners.map((partnerName, qIndex) => ( 
-                                                                            <option key={partnerName.id} value={partnerName.id}>{partnerName.vendor_name}</option>    
+                                                                        {partners && partners.map((partnerName, qIndex) => ( 
+                                                                            <option key={partnerName.id} value={partnerName.id} key  ={qIndex}>{partnerName.vendor_name}</option>    
                                                                         ))}                                    
                                                                         </Field>     
                                                                         {errors.partner_id && touched.partner_id ? (
@@ -480,6 +586,87 @@ class AdminReport extends Component {
                                                                 
                                                             </Row>
                                                         </Col>
+                                                        
+                                                        {values.partner_id == '12' ?
+                                                        <Fragment>
+                                                            <Col sm={12} md={4} lg={4}>
+                                                                <Row>
+                                                                    <Col sm={12} md={4} lg={4}>
+                                                                        <FormGroup>
+                                                                            <div className="insurerName">
+                                                                                <span className="fs-16">vendor Name</span>
+                                                                            </div>
+                                                                        </FormGroup>
+                                                                    </Col>
+                                                                    <Col sm={12} md={8} lg={8}>
+                                                                        <FormGroup>
+                                                                            <div className="formSection">
+                                                                            <Field
+                                                                                name="intermediary_id"
+                                                                                component="select"
+                                                                                autoComplete="off"
+                                                                                value={values.intermediary_id}
+                                                                                className="formGrp"
+                                                                                onChange = {(e)=> {
+                                                                                    this.getUserId(e.target.value)
+                                                                                    setFieldValue('product_type','')
+                                                                                    setFieldValue('intermediary_id',e.target.value)
+                                                                                }}
+                                                                            >
+                                                                            <option value="">Partners</option>
+                                                                            {intermediaryVendorList && intermediaryVendorList.map((partnerName, qIndex) => ( 
+                                                                                <option key={partnerName.id} value={partnerName.id}>{partnerName.intermediary_name}</option>    
+                                                                            ))}                                    
+                                                                            </Field>     
+                                                                            {errors.intermediary_id && touched.intermediary_id ? (
+                                                                                <span className="errorMsg">{errors.intermediary_id}</span>
+                                                                            ) : null}        
+                                                                            </div>
+                                                                        </FormGroup>
+                                                                    </Col>
+                                                                    
+                                                                </Row>
+                                                            </Col>
+                                                            {values.intermediary_id ?
+                                                            <Col sm={12} md={4} lg={4}>
+                                                                <Row>
+                                                                    <Col sm={12} md={4} lg={4}>
+                                                                        <FormGroup>
+                                                                            <div className="insurerName">
+                                                                                <span className="fs-16">User</span>
+                                                                            </div>
+                                                                        </FormGroup>
+                                                                    </Col>
+                                                                    <Col sm={12} md={8} lg={8}>
+                                                                        <FormGroup>
+                                                                            <div className="formSection">
+                                                                            <Field
+                                                                                name="user_id"
+                                                                                component="select"
+                                                                                autoComplete="off"
+                                                                                value={values.user_id}
+                                                                                className="formGrp" 
+                                                                                onChange= {(e)=> {
+                                                                                    setFieldValue('user_id', e.target.value)
+                                                                                    setFieldValue('product_type','')
+                                                                                }}
+                                                                            >
+                                                                            <option value="">Users</option>
+                                                                            {userId && userId.map((partnerName, qIndex) => ( 
+                                                                                <option key={qIndex} value={partnerName.id}>{partnerName.email_id}</option>    
+                                                                            ))}                           
+                                                                            </Field>     
+                                                                            {errors.user_id && touched.user_id ? (
+                                                                                <span className="errorMsg">{errors.user_id}</span>
+                                                                            ) : null}        
+                                                                            </div>
+                                                                        </FormGroup>
+                                                                    </Col>
+                                                                    
+                                                                </Row>
+                                                            </Col> : null }
+                                                        </Fragment> : 
+                                                        <Fragment>
                                                         <Col sm={12} md={4} lg={4}>
                                                             <Row>
                                                                 <Col sm={12} md={4} lg={4}>
@@ -500,7 +687,7 @@ class AdminReport extends Component {
                                                                             className="formGrp"
                                                                         >
                                                                         <option value="">Products</option>
-                                                                        {products.map((productName, qIndex) => ( 
+                                                                        {products && products.map((productName, qIndex) => ( 
                                                                             <option key={productName.id} value={productName.id}>{productName.name}</option>    
                                                                         ))}                                    
                                                                         </Field>     
@@ -542,8 +729,10 @@ class AdminReport extends Component {
                                                                 {/* <Col sm={12} md={3} lg={2}>&nbsp;</Col> */}
                                                             </Row>
                                                         </Col>
-                                                    </Row>
-                                                ) : (
+                                                        </Fragment>
+                                                        }
+                                                        </Row>
+                                                    ) : (
                                                     <Row>
                                                         <Col sm={12} md={6} lg={6}>
                                                             <Row>
@@ -565,7 +754,7 @@ class AdminReport extends Component {
                                                                             className="formGrp"
                                                                         >
                                                                         <option value="">Products</option>
-                                                                        {products.map((productName, qIndex) => ( 
+                                                                        {products && products.map((productName, qIndex) => ( 
                                                                             <option key={productName.id} value={productName.id}>{productName.name}</option>    
                                                                         ))}                                    
                                                                         </Field>     
@@ -609,17 +798,93 @@ class AdminReport extends Component {
                                                         </Col>
                                                     </Row>
                                                 )}
-                                                <Row>
-                                                    {/* <Col sm={12} md={6} lg={5}>
-                                                    </Col> */}
-                                                    <Col sm={12} md={12} lg={12} style={{ textAlign: 'center' }}>
-                                                        <Button className={`proceedBtn`} type="submit" >
-                                                            Search
-                                                        </Button>
-                                                        &nbsp;&nbsp;
-                                                        
-                                                    </Col>
-                                                </Row>
+                                                {values.partner_id == '12' && values.user_id ?
+                                                    <Row>    
+                                                        <Col sm={12} md={4} lg={4}>
+                                                            <Row>
+                                                                <Col sm={12} md={4} lg={4}>
+                                                                    <FormGroup>
+                                                                        <div className="insurerName">
+                                                                            <span className="fs-16">Product Type</span>
+                                                                        </div>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                                <Col sm={12} md={8} lg={8}>
+                                                                    <FormGroup>
+                                                                        <div className="formSection">
+                                                                        <Field
+                                                                            name="product_type"
+                                                                            component="select"
+                                                                            autoComplete="off"
+                                                                            value={values.product_type}
+                                                                            className="formGrp"
+                                                                            onChange = {(e)=> {
+                                                                                if(values.from_date && values.to_date && e.target.value == '2'){
+                                                                                    this.getBatchID(values.user_id,values.from_date,values.to_date)
+                                                                                }
+                                                                                setFieldValue('product_type', e.target.value)
+                                                                            }}
+                                                                        >
+                                                                        <option value="">Products</option>
+                                                                        <option key={1} value={1}>Retail</option>    
+                                                                        <option key={2} value={2}>Group</option>                              
+                                                                        </Field>     
+                                                                        {errors.product_type && touched.product_type ? (
+                                                                            <span className="errorMsg">{errors.product_type}</span>
+                                                                        ) : null}        
+                                                                        </div>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                                
+                                                            </Row>
+                                                        </Col>
+                                                        {values.partner_id == '12' && values.user_id && values.product_type == '2' ?
+                                                        <Col sm={12} md={4} lg={4}>
+                                                            <Row>
+                                                                <Col sm={12} md={4} lg={4}>
+                                                                    <FormGroup>
+                                                                        <div className="insurerName">
+                                                                            <span className="fs-16">Batch Id</span>
+                                                                        </div>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                                <Col sm={12} md={8} lg={8}>
+                                                                    <FormGroup>
+                                                                        <div className="formSection">
+                                                                        <Field
+                                                                            name="batch_id"
+                                                                            component="select"
+                                                                            autoComplete="off"
+                                                                            value={values.batch_id}
+                                                                            className="formGrp"
+                                                                            onChange = {(e)=> {
+                                                                                setFieldValue('batch_id',e.target.value)
+                                                                            }}
+                                                                        >
+                                                                        <option value="">Batch Id</option>
+                                                                        {batchIds && batchIds.map((partnerName, qIndex) => ( 
+                                                                            <option key={partnerName.id} value={partnerName.id}>{partnerName.batch_no}</option>    
+                                                                        ))}                                    
+                                                                        </Field>     
+                                                                        {errors.batch_id && touched.batch_id ? (
+                                                                            <span className="errorMsg">{errors.batch_id}</span>
+                                                                        ) : null}        
+                                                                        </div>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col> : null }
+                                                    </Row> : null
+                                                    }
+                                                    <Row>
+                                                        <Col sm={12} md={12} lg={12} style={{ textAlign: 'center' }}>
+                                                            <Button className={`proceedBtn`} type="submit" >
+                                                                Search
+                                                            </Button>
+                                                            &nbsp;&nbsp;
+                                                            
+                                                        </Col>
+                                                    </Row>
                                                 
                                                 </div>
                                             {/* </Collapsible> */}
@@ -634,7 +899,7 @@ class AdminReport extends Component {
                                     &nbsp;
                                 </Row>
                                 {policyHolder && this.state.showList === true ? 
-                                <div className="customInnerTable">
+                                <div className="customInnerTable dataTableCustom">
                                     {policyHolder.length === 0 ? null : (
                                         <div className="row">
                                             <div className="col" style={{ textAlign: 'center' }}>
