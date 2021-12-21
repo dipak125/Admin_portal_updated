@@ -84,7 +84,8 @@ class AdminReport extends Component {
         per_page: 10,
         last_page: 1,
         intermediaryVendorList: [],
-        batchIds: []
+        batchIds: [],
+        partner_id: ""
     }
     
     changePlaceHoldClassAdd(e) {
@@ -420,7 +421,7 @@ class AdminReport extends Component {
 
 
     render() {
-        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page, last_page, intermediaryVendorList, batchIds, userId } = this.state
+        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page, last_page, intermediaryVendorList, batchIds, userId, partner_id } = this.state
         var totalRecord = statusCount ? statusCount.total : 1
         // var page_no = page_no ? page_no : 1 
 
@@ -497,6 +498,8 @@ class AdminReport extends Component {
                                                                     onChange={(val) => {
                                                                         setFieldTouched('from_date');
                                                                         setFieldValue('from_date', val); 
+                                                                        setFieldValue('product_type', "");
+                                                                        setFieldValue('batch_id', "");                                                                                                                                            
                                                                     }}
                                                                 /> 
                                                                     {errors.from_date || !touched.from_date  ? (
@@ -535,6 +538,8 @@ class AdminReport extends Component {
                                                                         onChange={(val) => {
                                                                             setFieldTouched('to_date');
                                                                             setFieldValue('to_date', val); 
+                                                                            setFieldValue('product_type', "");
+                                                                            setFieldValue('batch_id', "");
                                                                         }}
                                                                     /> 
                                                                     {errors.to_date || !touched.to_date  ? (
@@ -570,6 +575,11 @@ class AdminReport extends Component {
                                                                                     this.getVendors(e.target.value)
                                                                                 }
                                                                                 setFieldValue('partner_id', e.target.value)
+                                                                                this.setState({partner_id: e.target.value, policyHolder: []})
+                                                                                setFieldValue('product_type', "");
+                                                                                setFieldValue('batch_id', "");
+                                                                                setFieldValue('intermediary_id', "");
+                                                                                setFieldValue('user_id', "");   
                                                                             }}
                                                                         >
                                                                         <option value="">Partners</option>
@@ -594,7 +604,7 @@ class AdminReport extends Component {
                                                                     <Col sm={12} md={4} lg={4}>
                                                                         <FormGroup>
                                                                             <div className="insurerName">
-                                                                                <span className="fs-16">vendor Name</span>
+                                                                                <span className="fs-16">Mi entities/ Agents</span>
                                                                             </div>
                                                                         </FormGroup>
                                                                     </Col>
@@ -914,37 +924,64 @@ class AdminReport extends Component {
                                         </div>
                                     )}
                                     <br />
+                                    {partner_id == '12' ? 
                                     <BootstrapTable ref="table"
-                                        data={policyHolder}
-                                        pagination={true}
-                                        options={options}
-                                        remote={true}
-                                        fetchInfo={{ dataTotalSize: totalRecord }}
-                                        // striped
-                                        // hover
-                                        //wrapperClasses="table-responsive "
-                                        className="reportclass"
-                                    >
+                                    data={policyHolder}
+                                    pagination={true}
+                                    options={options}
+                                    remote={true}
+                                    fetchInfo={{ dataTotalSize: totalRecord }}
+                                    // striped
+                                    // hover
+                                    //wrapperClasses="table-responsive "
+                                    className="reportclass"
+                                >
+                                    <TableHeaderColumn isKey dataField="PolicyHolderId"  >Policy Holder ID</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='AgentCode' dataSort>MI Agent code</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="AgentName" >MI Agent Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="PolicyNumber" >Policy No</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="ProductName">Product Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='NetPremium' dataSort>Net Premium</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='GWP' dataSort>GWP</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="CustomerName"  >Customer Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="State"  >State</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="PaymentDate">Payment date</TableHeaderColumn>                            
+                                    <TableHeaderColumn dataField="TxnId">Txn ID</TableHeaderColumn>  
+                                    <TableHeaderColumn >Loan A/c no</TableHeaderColumn>    
+
+                                </BootstrapTable> :
+                                <BootstrapTable ref="table"
+                                    data={policyHolder}
+                                    pagination={true}
+                                    options={options}
+                                    remote={true}
+                                    fetchInfo={{ dataTotalSize: totalRecord }}
+                                    // striped
+                                    // hover
+                                    //wrapperClasses="table-responsive "
+                                    className="reportclass"
+                                >
 
 
-                                        <TableHeaderColumn isKey dataField="PolicyHolderId"  >Policy Holder ID</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='PartnerName' dataSort>Agent Id</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='AgentCode' dataSort>Agent Code</TableHeaderColumn>
-                                        <TableHeaderColumn dataField="AgentName" >Agent Name</TableHeaderColumn>
-                                        <TableHeaderColumn dataField="PolicyNumber" >Policy No</TableHeaderColumn>
-                                        <TableHeaderColumn dataField="CustomerName"  >Customer Name</TableHeaderColumn>
-                                        <TableHeaderColumn dataField="State"  >State</TableHeaderColumn>
-  
-                                        <TableHeaderColumn dataField='NetPremium' dataSort>Net Premium</TableHeaderColumn>
-                                        <TableHeaderColumn dataField='GWP' dataSort>GWP</TableHeaderColumn>
-                                        <TableHeaderColumn dataField="ProductName">Product Name</TableHeaderColumn>
-                                        <TableHeaderColumn dataField="VehicleDetails">Vehicle Details</TableHeaderColumn>
-                                        <TableHeaderColumn dataField="RegistrationNo">Rgst. No</TableHeaderColumn>
-                                        <TableHeaderColumn dataField="PaymentDate">Pay Date</TableHeaderColumn>
-                                        
-                                        <TableHeaderColumn dataField="TxnId">Order Id / Txn ID</TableHeaderColumn>   
+                                    <TableHeaderColumn isKey dataField="PolicyHolderId"  >Policy Holder ID</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='PartnerName' dataSort>Agent Id</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='AgentCode' dataSort>Agent Code</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="AgentName" >Agent Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="PolicyNumber" >Policy No</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="CustomerName"  >Customer Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="State"  >State</TableHeaderColumn>
 
-                                    </BootstrapTable>
+                                    <TableHeaderColumn dataField='NetPremium' dataSort>Net Premium</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='GWP' dataSort>GWP</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="ProductName">Product Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="VehicleDetails">Vehicle Details</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="RegistrationNo">Rgst. No</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="PaymentDate">Pay Date</TableHeaderColumn>
+                                    
+                                    <TableHeaderColumn dataField="TxnId">Order Id / Txn ID</TableHeaderColumn>   
+
+                                </BootstrapTable>
+                                }
                                 </div>
                                 : null }
                             </div>

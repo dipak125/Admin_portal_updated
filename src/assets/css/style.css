@@ -984,3 +984,14 @@ border: 0;
   text-align: center;
   margin-bottom: 10px;
 }
+
+.dataTableCustom table {
+  width: 1300px;
+  overflow-x: auto;
+}
+.dataTableCustom table td, .dataTableCustom table th{
+  font-size: 13px !important;
+}
+.contBox.m-b-45.tickedTable .customInnerTable.dataTableCustom tbody td {
+  max-width: 100px;
+}
