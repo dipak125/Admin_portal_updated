@@ -36,17 +36,6 @@ const actionFormatter = (refObj) => (cell, row, enumObject) => {
     )
 }
 
-function quoteFormatter(cell) {
-    return (cell ? (cell.quote_id ? cell.quote_id: null): null);
-}
-
-function premiumFormatter(cell) {
-    return (cell ? (cell.net_premium ? cell.net_premium: null): null);
-}  
-
-function polNumFormatter(cell) {
-    return (cell ? (cell.policy_note ? cell.policy_note.policy_no : null): null);
-} 
 
 function productFormatter(cell) {
     return (cell ? (cell.vehicletype ? cell.vehicletype.name : null): null);
@@ -469,13 +458,13 @@ class AdminReport extends Component {
                                             {/* <Collapsible trigger="Search with Dates & Products" open={false} onClose = {this.handleClose.bind(this,3,setFieldValue,setFieldTouched)}> */}
                                                 <div  className="listrghtsideTrigr">
                                                 <Row className="m-b-20">
-                                                    <Col sm={12} md={6} lg={6}>
+                                                    <Col sm={12} md={4} lg={4}>
                                                         <Row>
                                                             <Col sm={12} md={4} lg={4}>
                                                                 <FormGroup>
                                                                     <div className="insurerName">
                                                                         <span className="fs-16"> From Date </span>
-                                                                        <span className="impField">*</span>
+                                                                        {/* <span className="impField">*</span> */}
                                                                     </div>
                                                                 </FormGroup>
                                                             </Col>
@@ -509,13 +498,13 @@ class AdminReport extends Component {
                                                             </Col>
                                                         </Row>
                                                     </Col>
-                                                    <Col sm={12} md={6} lg={6}>
+                                                    <Col sm={12} md={4} lg={4}>
                                                         <Row>
                                                             <Col sm={12} md={4} lg={4}>
                                                                 <FormGroup>
                                                                     <div className="insurerName">
                                                                         <span className="fs-16">To Date</span>
-                                                                        <span className="impField">*</span>
+                                                                        {/* <span className="impField">*</span> */}
                                                                     </div>
                                                                 </FormGroup>
                                                             </Col>
@@ -940,7 +929,7 @@ class AdminReport extends Component {
                                     <TableHeaderColumn dataField='AgentCode' dataSort>MI Agent code</TableHeaderColumn>
                                     <TableHeaderColumn dataField="AgentName" >MI Agent Name</TableHeaderColumn>
                                     <TableHeaderColumn dataField="PolicyNumber" >Policy No</TableHeaderColumn>
-                                    <TableHeaderColumn dataField="ProductName">Product Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="ProductName" >Product Name</TableHeaderColumn>
                                     <TableHeaderColumn dataField='NetPremium' dataSort>Net Premium</TableHeaderColumn>
                                     <TableHeaderColumn dataField='GWP' dataSort>GWP</TableHeaderColumn>
                                     <TableHeaderColumn dataField="CustomerName"  >Customer Name</TableHeaderColumn>
@@ -948,7 +937,6 @@ class AdminReport extends Component {
                                     <TableHeaderColumn dataField="PaymentDate">Payment date</TableHeaderColumn>                            
                                     <TableHeaderColumn dataField="TxnId">Txn ID</TableHeaderColumn>  
                                     <TableHeaderColumn >Loan A/c no</TableHeaderColumn>    
-
                                 </BootstrapTable> :
                                 <BootstrapTable ref="table"
                                     data={policyHolder}
