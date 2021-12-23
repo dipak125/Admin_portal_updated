@@ -55,6 +55,21 @@ const ComprehensiveValidation = Yup.object().shape({
         is: product_type => product_type == '2',
         then: Yup.string().required('Please select batch'),
         otherwise: Yup.string()
+    }),
+    intermediary_id: Yup.string().when(['partner_id'], {
+        is: partner_id => partner_id == '12',
+        then: Yup.string().required('Please select mi entities'),
+        otherwise: Yup.string()
+    }),
+    user_id: Yup.string().when(['intermediary_id'], {
+        is: intermediary_id => intermediary_id != '',
+        then: Yup.string().required('Please select user'),
+        otherwise: Yup.string()
+    }),
+    product_type: Yup.string().when(['user_id'], {
+        is: user_id => user_id != '',
+        then: Yup.string().required('Please select product type'),
+        otherwise: Yup.string()
     })
     
 })
@@ -568,7 +583,9 @@ class AdminReport extends Component {
                                                                                 setFieldValue('product_type', "");
                                                                                 setFieldValue('batch_id', "");
                                                                                 setFieldValue('intermediary_id', "");
-                                                                                setFieldValue('user_id', "");   
+                                                                                setFieldValue('user_id', "");  
+                                                                                setFieldValue('product_id', "");
+                                                                                setFieldValue('agent_id', ""); 
                                                                             }}
                                                                         >
                                                                         <option value="">Partners</option>
@@ -609,6 +626,7 @@ class AdminReport extends Component {
                                                                                 onChange = {(e)=> {
                                                                                     this.getUserId(e.target.value)
                                                                                     setFieldValue('product_type','')
+                                                                                    setFieldValue('user_id','')
                                                                                     setFieldValue('intermediary_id',e.target.value)
                                                                                 }}
                                                                             >
@@ -879,9 +897,7 @@ class AdminReport extends Component {
                                                         <Col sm={12} md={12} lg={12} style={{ textAlign: 'center' }}>
                                                             <Button className={`proceedBtn`} type="submit" >
                                                                 Search
-                                                            </Button>
-                                                            &nbsp;&nbsp;
-                                                            
+                                                            </Button>                                                                                                                      
                                                         </Col>
                                                     </Row>
                                                 
@@ -895,7 +911,7 @@ class AdminReport extends Component {
                                     
 
                                 <Row>
-                                    &nbsp;
+                                    
                                 </Row>
                                 {policyHolder && this.state.showList === true ? 
                                 <div className="customInnerTable dataTableCustom">
@@ -926,7 +942,7 @@ class AdminReport extends Component {
                                     className="reportclass"
                                 >
                                     <TableHeaderColumn isKey dataField="PolicyHolderId"  >Policy Holder ID</TableHeaderColumn>
-                                    <TableHeaderColumn dataField='AgentCode' dataSort>MI Agent code</TableHeaderColumn>
+                                    <TableHeaderColumn dataField='AgentCode' dataSort>MI Agent Agreement code</TableHeaderColumn>
                                     <TableHeaderColumn dataField="AgentName" >MI Agent Name</TableHeaderColumn>
                                     <TableHeaderColumn dataField="PolicyNumber" >Policy No</TableHeaderColumn>
                                     <TableHeaderColumn dataField="ProductName" >Product Name</TableHeaderColumn>
