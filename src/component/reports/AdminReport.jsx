@@ -51,8 +51,8 @@ const ComprehensiveValidation = Yup.object().shape({
     from_date: Yup.string().nullable().required("Please select From Date"),
     to_date: Yup.string().nullable().required("Please select To Date"),
     agent_id: Yup.string().max(15, "Agent Id can be maximum 15 characters"),
-    batch_id: Yup.string().when(['product_type'], {
-        is: product_type => product_type == '2',
+    batch_id: Yup.string().when(['product_type','group_prod_id'], {
+        is: (product_type,group_prod_id) => (product_type == '2' && (group_prod_id == '23' || group_prod_id == '25')),
         then: Yup.string().required('Please select batch'),
         otherwise: Yup.string()
     }),
@@ -61,14 +61,19 @@ const ComprehensiveValidation = Yup.object().shape({
         then: Yup.string().required('Please select mi entities'),
         otherwise: Yup.string()
     }),
-    user_id: Yup.string().when(['intermediary_id'], {
-        is: intermediary_id => intermediary_id != '',
+    user_id: Yup.string().when(['intermediary_id','partner_id'], {
+        is: (intermediary_id,partner_id) => (intermediary_id != '' && partner_id == '12'),
         then: Yup.string().required('Please select user'),
         otherwise: Yup.string()
     }),
-    product_type: Yup.string().when(['user_id'], {
-        is: user_id => user_id != '',
+    product_type: Yup.string().when(['user_id', 'partner_id'], {
+        is: (user_id,partner_id) => (user_id != '' && partner_id == '12'),
         then: Yup.string().required('Please select product type'),
+        otherwise: Yup.string()
+    }),
+    group_prod_id: Yup.string().when(['product_type', 'partner_id'], {
+        is: (product_type,partner_id) => (product_type == '2' && partner_id == '12'),
+        then: Yup.string().required('Please select group product'),
         otherwise: Yup.string()
     })
     
@@ -275,7 +280,6 @@ class AdminReport extends Component {
         
             let encryption = new Encryption();
             let response = JSON.parse(encryption.decrypt(res.data));
-            console.log("resp ----------- ", response)
             this.setState({
                 products: response.data ? response.data : [],
             });
@@ -297,7 +301,6 @@ class AdminReport extends Component {
         
             let encryption = new Encryption();
             let response = JSON.parse(encryption.decrypt(res.data));
-            console.log("resp ---- ", response)
             this.setState({
                 intermediaryVendorList: response.data ? response.data : [],
             });
@@ -319,7 +322,6 @@ class AdminReport extends Component {
         postData['parent_id'] = parent_id;
 
         formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
-        console.log("postdata---------------- ", postData)
 
         this.props.loadingStart();
         axios.post('admin/getUserId',formData)
@@ -342,13 +344,15 @@ class AdminReport extends Component {
         });
     }
 
-    getBatchID = (user_id,from_date,to_date) => {
+    getBatchID = (user_id,from_date,to_date,group_prod_id) => {
         const formData = new FormData();
         let encryption = new Encryption();
         let postData = {}
         postData['from_date'] = moment(from_date).format("YYYY-MM-DD");
         postData['to_date'] = moment(to_date).format("YYYY-MM-DD");
         postData['user_id'] = user_id;
+        postData['group_prod_id'] = group_prod_id;
+        
 
         formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
         console.log("download postdata---------------- ", postData)
@@ -836,11 +840,14 @@ class AdminReport extends Component {
                                                                             value={values.product_type}
                                                                             className="formGrp"
                                                                             onChange = {(e)=> {
-                                                                                if(values.from_date && values.to_date && e.target.value == '2'){
-                                                                                    this.getBatchID(values.user_id,values.from_date,values.to_date)
+                                                                                if(e.target.value == '1'){     
+                                                                                    setFieldValue('batch_id', '')                           
                                                                                 }
                                                                                 setFieldValue('product_type', e.target.value)
+                                                                                setFieldValue('group_prod_id', '')
+                                                                                
                                                                             }}
+                                                                           
                                                                         >
                                                                         <option value="">Products</option>
                                                                         <option key={1} value={1}>Retail</option>    
@@ -856,6 +863,47 @@ class AdminReport extends Component {
                                                             </Row>
                                                         </Col>
                                                         {values.partner_id == '12' && values.user_id && values.product_type == '2' ?
+                                                        <Col sm={12} md={4} lg={4}>
+                                                            <Row>
+                                                                <Col sm={12} md={4} lg={4}>
+                                                                    <FormGroup>
+                                                                        <div className="insurerName">
+                                                                            <span className="fs-16">Group Product</span>
+                                                                        </div>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                                <Col sm={12} md={8} lg={8}>
+                                                                    <FormGroup>
+                                                                        <div className="formSection">
+                                                                        <Field
+                                                                            name="group_prod_id"
+                                                                            component="select"
+                                                                            autoComplete="off"
+                                                                            value={values.group_prod_id}
+                                                                            className="formGrp"
+                                                                            onChange = {(e)=> {
+                                                                                if(values.from_date && values.to_date && values.product_type == '2' && (e.target.value == '23' || e.target.value == '25')){
+                                                                                    this.getBatchID(values.user_id,values.from_date,values.to_date, e.target.value)
+                                                                                }
+                                                                                setFieldValue('group_prod_id', e.target.value)
+                                                                                setFieldValue('batch_id', '')
+                                                                            }}
+                                                                        >
+                                                                        <option value="">Select Group Product</option>
+                                                                        <option value="21">Arogya Sanjeevani Micro - Group</option>
+                                                                        <option value="23">KSB Micro - Group</option>
+                                                                        <option value="25">Jan Rakshak Micro - Group</option>
+                                                                                                          
+                                                                        </Field>     
+                                                                        {errors.group_prod_id && touched.group_prod_id ? (
+                                                                            <span className="errorMsg">{errors.group_prod_id}</span>
+                                                                        ) : null}        
+                                                                        </div>
+                                                                    </FormGroup>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col> : null }
+                                                        {values.partner_id == '12' && values.user_id && values.product_type == '2' && (values.group_prod_id == '23' || values.group_prod_id == '25') ?
                                                         <Col sm={12} md={4} lg={4}>
                                                             <Row>
                                                                 <Col sm={12} md={4} lg={4}>
@@ -953,7 +1001,7 @@ class AdminReport extends Component {
                                     <TableHeaderColumn dataField="PaymentDate">Payment date</TableHeaderColumn>                            
                                     <TableHeaderColumn dataField="TxnId">Txn ID</TableHeaderColumn>  
                                     <TableHeaderColumn >Loan A/c no</TableHeaderColumn>    
-                                </BootstrapTable> :
+                                    </BootstrapTable> :
                                 <BootstrapTable ref="table"
                                     data={policyHolder}
                                     pagination={true}
