@@ -406,6 +406,11 @@ const Reports = Loadable({
     loader: () => import(/*webpackChunkName: "Products" */"../reports/AdminReport"),
     loading: () => loadingContent
 });
+const ACD = Loadable({
+    loader: () => import(/*webpackChunkName: "Products" */"../reports/ACD"),
+    loading: () => loadingContent
+});
+
 
 const UploadUsers = Loadable({
     loader: () => import(/*webpackChunkName: "Products" */"../users/UploadUsers"),
@@ -422,7 +427,7 @@ class Routes extends Component {
                         <Route exact path="/login" component={LogIn} />                
                         <Route exact path="/logout" component={Logout} /> 
                         <PrivateRoute exact path="/Error" component={Error} />
-
+                        <PrivateRoute exact path="/ACD" component={ACD} />
                         <PrivateRoute exact path="/Reports" component={Reports} />
                         <PrivateRoute exact path="/upload-users" component={UploadUsers} />
                         <Redirect from="/" to="/Reports" />
