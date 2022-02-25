@@ -70,6 +70,15 @@ class SideNav extends Component {
                 </span>
                 Admin 
               </Link>
+              <Link to="/ACD" activeClassName="active">
+                <span className="leftIcon01">
+                  <img
+                    src={require("../../../assets/images/leftIcon02Hover.svg")}
+                    alt=""
+                  />
+                </span>
+                Acd Statements 
+              </Link>
             </li>
             {bcmaster_id && bcmaster_id == 3 || bcmaster_id == 6 ? 
             <li>

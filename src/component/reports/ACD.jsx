@@ -433,7 +433,7 @@ const ACD =(props)=>{
                                               >
                                                 <option value="">Select account no</option>
                                                 {state.Account_list && state.Account_list.map(data=>
-                                                  <option value={data.user_id}>{data.account_number}</option>
+                                                  <option value={data.user_id}>{`${data.account_number} (${data.intermediary_name})`}</option>
                                                   )}
                                                 
                                                 
