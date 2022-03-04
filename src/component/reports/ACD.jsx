@@ -34,7 +34,7 @@ import { useRef } from "react";
     start_date: Yup.date().required("Please Select date or Month"),
     account_list:Yup.string().required("please choose account")
   });
-  
+ 
 
 const mapStateToProps = state => {
     return {
@@ -52,11 +52,15 @@ const mapStateToProps = state => {
       return row.prev_balance+row.credit
 //    return row[index].prev_balance + row[index].credit;
   }
+  const  dateFormat = (value) => {
+    return moment(value).format("DD-MM-YYYY HH:mm:ss");
+}
+
   const AvilableForamter =(value,row,index,field)=>{
       console.log("cell1",row.prev_balance + row.credit - row.debit)
     return row.prev_balance + row.credit - row.debit;
   }
-
+  
 const ACD =(props)=>{
     let path=""
     const table=useRef("table");
@@ -467,11 +471,12 @@ const ACD =(props)=>{
                                                 wrapperClasses="table-responsive"
                                             >
 
-                                                <TableHeaderColumn width='195px' dataField="created_at" dataAlign="center"  isKey >Date</TableHeaderColumn>
+                                                <TableHeaderColumn width='195px' dataField="created_at" dataAlign="center"  dataFormat={dateFormat} isKey >Date</TableHeaderColumn>
                                                 <TableHeaderColumn width='100px' dataField="prev_balance" dataAlign="center" >Balance</TableHeaderColumn>
                                                 <TableHeaderColumn width='100px' dataField="credit" dataAlign="center"  >Amount Added</TableHeaderColumn>
                                                 <TableHeaderColumn width='100px' dataField="title" dataAlign="center" dataFormat={ Total} >Total</TableHeaderColumn>
                                                 <TableHeaderColumn width='100px' dataField="debit" dataAlign="center"  >Policy Amount</TableHeaderColumn>
+                                                <TableHeaderColumn width='100px' dataField="batch_no" dataAlign="center"  >Batch No</TableHeaderColumn>
                                                 <TableHeaderColumn width='100px' dataField="title" dataAlign="center" dataFormat={ AvilableForamter} >Avilable Balance</TableHeaderColumn>
                                                 
 
