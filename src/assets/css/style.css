@@ -986,7 +986,7 @@ border: 0;
 }
 
 .dataTableCustom table {
-  width: 2000px;
+  width:100%;
   overflow-x: auto;
 }
 .dataTableCustom table td, .dataTableCustom table th{
@@ -995,4 +995,10 @@ border: 0;
 }
 .contBox.m-b-45.tickedTable .customInnerTable.dataTableCustom tbody td {
   max-width: 100px;
+}
+@media (min-width: 1300px){
+  .breakin .dataTableCustom table {
+     width: 100%;
+     overflow-x: auto;
+ }
 }
