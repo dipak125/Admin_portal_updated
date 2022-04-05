@@ -255,7 +255,7 @@ class AdminReport extends Component {
             let response = JSON.parse(encryption.decrypt(res.data)); 
             console.log("download resp---------------- ", response)
             this.props.loadingStop();
-            this.downloadDoc(response.data.report_id)
+            this.downloadDoc(response.data.uploded_path)
             // swal.fire('Report Id');
         }).
         catch(err=>{
@@ -268,8 +268,9 @@ class AdminReport extends Component {
         })
     }
 
-    downloadDoc = (refNumber) => {
-        let file_path = `${process.env.REACT_APP_PAYMENT_URL}/admin_report_download.php?report_id=${refNumber}&bcmaster_id=${this.state.bcmaster_id}`
+    downloadDoc = (path) => {
+        //let file_path = `${process.env.REACT_APP_PAYMENT_URL}/admin_report_download.php?report_id=${refNumber}&bcmaster_id=${this.state.bcmaster_id}`
+        let file_path=path
         // console.log(file_path);
         const { policyId } = this.props.match.params
         const url = file_path;
