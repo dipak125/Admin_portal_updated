@@ -20,6 +20,21 @@ import { registerLocale, setDefaultLocale } from "react-datepicker";
 import enGb from 'date-fns/locale/en-GB';
 registerLocale('enGb', enGb)
 
+const Name =(value,row,index,field)=>{
+    console.log("name1",row.CustomerName,typeof(row.CustomerName))
+   
+       if(row.CustomerName.includes("null"))
+       {
+        let name= row.CustomerName.replace("null","")
+        console.log("name2",row.CustomerName,typeof(row.CustomerName))
+        return name;
+       }
+
+    return row.CustomerName;
+   // return row.prev_balance+row.credit
+//    return row[index].prev_balance + row[index].credit;
+}
+
 const actionFormatter = (refObj) => (cell, row, enumObject) => {
     return (
         <LinkWithTooltip
@@ -44,7 +59,10 @@ function productFormatter(cell) {
 const newInitialValues = {
     to_date : "",
     from_date : "",
-    batch_id: ""
+    batch_id: "",
+    payment_status:"",
+    payment_type:"",
+    business_type:""
 }
 
 const ComprehensiveValidation = Yup.object().shape({
@@ -94,7 +112,9 @@ class AdminReport extends Component {
         last_page: 1,
         intermediaryVendorList: [],
         batchIds: [],
-        partner_id: ""
+        partner_id: "",
+        payment_type:[],
+        payment_status:[]
     }
     
     changePlaceHoldClassAdd(e) {
@@ -112,6 +132,10 @@ class AdminReport extends Component {
     }
 
     handleSubmit=(values, page_no)=>{
+        if(!values.payment_status)
+        {
+            values.payment_status="Successful"
+        }
 
         if (isNaN(page_no)) {
             page_no = 1;
@@ -150,6 +174,7 @@ class AdminReport extends Component {
             postData['page'] = page_no;
             postData['policy_status'] = 'complete';
             postData['role_id'] = this.state.role_id;
+            
 
             formData.append('enc_data',encryption.encrypt(JSON.stringify(postData)));
 
@@ -197,6 +222,7 @@ class AdminReport extends Component {
         const formData = new FormData();
         let encryption = new Encryption();
         let values = this.state.searchValues;
+        console.log("check12",values)
         let postData = {}
 
         if(values != []) {            
@@ -414,8 +440,37 @@ class AdminReport extends Component {
             // setFieldValue('policy_no', "")
         }       
     }
+    getPaymentType = ()=>{
+        let encryption = new Encryption();
+        axios.get(`admin/transactionType`).then(res=>{
+            let data=JSON.parse(encryption.decrypt(res.data))
+            console.log(data);
+            let pay_type=[]
+            let pay_status=[]
+            data && data.data.map(data=>{
+                pay_type.push(data.payment_merchant);
+                pay_status.push(data.status_message);
+            })
+            pay_type = Array.from(new Set(pay_type));
+            pay_status = Array.from(new Set(pay_status));
+            console.log("check",pay_status,pay_type);
+
+
+            this.setState({
+                ...this.state,
+                payment_type:pay_type,
+                payment_status:pay_status
+            })
+
+            // let data=json.parse(encryption.decrypt(res.data));
+            // console.log("hi",data);
+        }).catch(err=>{
+            
+        })
+    }
 
     componentDidMount() {
+        this.getPaymentType();
         this.getAllProducts();
         let encryption = new Encryption();
 
@@ -429,8 +484,9 @@ class AdminReport extends Component {
 
 
     render() {
-        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page, last_page, intermediaryVendorList, batchIds, userId, partner_id } = this.state
+        const { statusCount, policyHolder, products, partners, role_id, page_no, per_page, last_page, intermediaryVendorList, batchIds, userId, partner_id,payment_status,payment_type } = this.state
         var totalRecord = statusCount ? statusCount.total : 1
+        console.log("data1",payment_type)
         // var page_no = page_no ? page_no : 1 
 
         // console.log("StatusCount", statusCount, statusCount.total_count)
@@ -467,7 +523,8 @@ class AdminReport extends Component {
                                 validationSchema={ComprehensiveValidation}
                                 >
                                 {({ values, errors, setFieldValue, setFieldTouched, isValid, isSubmitting, touched }) => {
-
+                                    console.log("values",values)
+                                    console.log("error",errors)
                                 return (
                                     <Form autoComplete="off">
                                         <div className="rghtsideTrigr collinput m-b-30">
@@ -557,6 +614,108 @@ class AdminReport extends Component {
                                                             </Col>
                                                         </Row>
                                                     </Col>
+                                                    <Col sm={12} md={4} lg={4}>
+                                                        <Row>
+                                                            <Col sm={12} md={4} lg={4}>
+                                                                <FormGroup>
+                                                                    <div className="insurerName">
+                                                                        <span className="fs-16">Payment Status</span>
+                                                                        {/* <span className="impField">*</span> */}
+                                                                    </div>
+                                                                </FormGroup>
+                                                            </Col>
+                                                            <Col sm={12} md={8} lg={8}>
+                                                                <FormGroup>
+                                                                <div className="formSection">
+                                                                        <Field
+                                                                            name="payment_status"
+                                                                            component="select"
+                                                                            autoComplete="off"
+                                                                            value={values.payment_status}
+                                                                            className="formGrp"
+                                                                            onChange= {(e)=>{
+                                                                                // if(e.target.value == '12') {
+                                                                                //     this.getVendors(e.target.value)
+                                                                                // }
+                                                                                setFieldValue('payment_status', e.target.value)
+                                                                                //this.setState({partner_id: e.target.value, policyHolder: []})
+                                                                                setFieldValue('product_type', "");
+                                                                                setFieldValue('batch_id', "");
+                                                                                setFieldValue('intermediary_id', "");
+                                                                                setFieldValue('user_id', "");  
+                                                                                setFieldValue('product_id', "");
+                                                                                setFieldValue('agent_id', ""); 
+                                                                            }}
+                                                                        >
+                                                                        <option value="">Payment Status</option>
+                                                                        {/* {payment_status && payment_status.map((data, index) => ( 
+                                                                            <option key={index} value={data} >{data}</option>    
+                                                                        ))}                                     */}
+                                                                        <option value="Successful">Successful</option>
+                                                                        <option value="Failure">Un-Successful</option>
+                                                                        <option value="All">All</option>
+                                                                        </Field>     
+                                                                        {errors.partner_id && touched.partner_id ? (
+                                                                            <span className="errorMsg">{errors.partner_id}</span>
+                                                                        ) : null}        
+                                                                        </div>
+                                                                </FormGroup>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    
+                                                    <Col sm={12} md={4} lg={4}>
+                                                        <Row>
+                                                            <Col sm={12} md={4} lg={4}>
+                                                                <FormGroup>
+                                                                    <div className="insurerName">
+                                                                        <span className="fs-16">Transaction Type</span>
+                                                                        {/* <span className="impField">*</span> */}
+                                                                    </div>
+                                                                </FormGroup>
+                                                            </Col>
+                                                            <Col sm={12} md={8} lg={8}>
+                                                                <FormGroup>
+                                                                <div className="formSection">
+                                                                        <Field
+                                                                            name="business_type"
+                                                                            component="select"
+                                                                            autoComplete="off"
+                                                                            value={values.business_type}
+                                                                            className="formGrp"
+                                                                            onChange= {(e)=>{
+                                                                                // if(e.target.value == '12') {
+                                                                                //     this.getVendors(e.target.value)
+                                                                                // }
+                                                                                
+                                                                                setFieldValue('business_type', e.target.value)
+                                                                                //this.setState({partner_id: e.target.value, policyHolder: []})
+                                                                                setFieldValue('product_type', "");
+                                                                                setFieldValue('batch_id', "");
+                                                                                setFieldValue('intermediary_id', "");
+                                                                                setFieldValue('user_id', "");  
+                                                                                setFieldValue('product_id', "");
+                                                                                setFieldValue('agent_id', ""); 
+                                                                            }}
+                                                                        >
+                                                                        <option value="">Transaction Type</option>
+                                                                        <option value="1">New Business</option>  
+                                                                        <option value="2">Roll Over</option> 
+                                                                        <option value="3">Lapsed</option> 
+                                                                        <option value="4">Renewal</option> 
+                                                                        <option value="5">All</option> 
+                                                                        
+                                                                            
+                                                                                                          
+                                                                        </Field>     
+                                                                        {errors.partner_id && touched.partner_id ? (
+                                                                            <span className="errorMsg">{errors.partner_id}</span>
+                                                                        ) : null}        
+                                                                        </div>
+                                                                </FormGroup>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
                                                 </Row>
                                                 {role_id === 1 ? (
                                                     <Row>
@@ -594,7 +753,7 @@ class AdminReport extends Component {
                                                                         >
                                                                         <option value="">Partners</option>
                                                                         {partners && partners.map((partnerName, qIndex) => ( 
-                                                                            <option key={partnerName.id} value={partnerName.id} key  ={qIndex}>{partnerName.vendor_name}</option>    
+                                                                            <option key={partnerName.id} value={partnerName.id} >{partnerName.vendor_name}</option>    
                                                                         ))}                                    
                                                                         </Field>     
                                                                         {errors.partner_id && touched.partner_id ? (
@@ -941,6 +1100,7 @@ class AdminReport extends Component {
                                                         </Col> : null }
                                                     </Row> : null
                                                     }
+                                                    
                                                     <Row>
                                                         <Col sm={12} md={12} lg={12} style={{ textAlign: 'center' }}>
                                                             <Button className={`proceedBtn`} type="submit" >
@@ -1020,7 +1180,7 @@ class AdminReport extends Component {
                                     <TableHeaderColumn dataField='AgentCode' dataSort>Agent Code</TableHeaderColumn>
                                     <TableHeaderColumn dataField="AgentName" >Agent Name</TableHeaderColumn>
                                     <TableHeaderColumn dataField="PolicyNumber" >Policy No</TableHeaderColumn>
-                                    <TableHeaderColumn dataField="CustomerName"  >Customer Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="CustomerName" dataFormat={Name} >Customer Name</TableHeaderColumn>
                                     <TableHeaderColumn dataField="State"  >State</TableHeaderColumn>
 
                                     <TableHeaderColumn dataField='NetPremium' dataSort>Net Premium</TableHeaderColumn>
