@@ -20,20 +20,6 @@ import { registerLocale, setDefaultLocale } from "react-datepicker";
 import enGb from 'date-fns/locale/en-GB';
 registerLocale('enGb', enGb)
 
-const Name =(value,row,index,field)=>{
-    console.log("name1",row.CustomerName,typeof(row.CustomerName))
-   
-       if(row.CustomerName.includes("null"))
-       {
-        let name= row.CustomerName.replace("null","")
-        console.log("name2",row.CustomerName,typeof(row.CustomerName))
-        return name;
-       }
-
-    return row.CustomerName;
-   // return row.prev_balance+row.credit
-//    return row[index].prev_balance + row[index].credit;
-}
 
 const actionFormatter = (refObj) => (cell, row, enumObject) => {
     return (
@@ -1181,7 +1167,7 @@ class AdminReport extends Component {
                                     <TableHeaderColumn dataField='AgentCode' dataSort>Agent Code</TableHeaderColumn>
                                     <TableHeaderColumn dataField="AgentName" >Agent Name</TableHeaderColumn>
                                     <TableHeaderColumn dataField="PolicyNumber" >Policy No</TableHeaderColumn>
-                                    <TableHeaderColumn dataField="CustomerName" dataFormat={Name} >Customer Name</TableHeaderColumn>
+                                    <TableHeaderColumn dataField="CustomerName">Customer Name</TableHeaderColumn>
                                     <TableHeaderColumn dataField="State"  >State</TableHeaderColumn>
 
                                     <TableHeaderColumn dataField='NetPremium' dataSort>Net Premium</TableHeaderColumn>
